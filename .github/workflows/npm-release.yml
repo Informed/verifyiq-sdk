@@ -25,7 +25,7 @@ jobs:
           always-auth: true
           node-version: 13.x
       - name: Install dependencies
-        run: npm install
+        run: yarn --frozen-lockfile
       - name: Build project
         run: NODE_ENV=production npm run build
       - name: Release to NPM
