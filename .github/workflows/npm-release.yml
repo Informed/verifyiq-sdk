@@ -12,8 +12,6 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   deploy:
-    env:
-      NPM_TOKEN: adfc1f38-8272-44d6-8a2a-0f4904050fb5
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -26,9 +24,14 @@ jobs:
         with:
           always-auth: true
           node-version: 13.x
+          scope: "@informed-iq"
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Build project
-        run: NODE_ENV=production npm run build
+        env:
+          NODE_ENV: production
+        run: npm run build
       - name: Release to NPM
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         run: npm run semantic-release
