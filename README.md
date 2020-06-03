@@ -1,9 +1,9 @@
-<p align="center" style="box-shadow: 2px 2px;">
+<div align="center" style="padding: 20px 0 0 0; box-shadow: 2px 2px; background-color: rgb(41, 142, 103);">
   <a href="https://informed.iq/" rel="noopener" target="_blank" >
     <img width="200" src="https://informed.iq/wp-content/uploads/2020/01/logo-informed-white.png" alt="verify-iq">
   </a>
-</p>
-<h1 align="center">VerifyIQ SDK</h1>
+  <h1 align="center">VerifyIQ SDK</h1>
+</div>
 
 ## Getting started
 
