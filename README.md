@@ -5,6 +5,14 @@
   <h1 align="center">VerifyIQ SDK</h1>
 </div>
 
+![Release NPM](https://github.com/Informed/verifyiq-sdk/workflows/Release%20NPM/badge.svg)
+![Test](https://github.com/Informed/verifyiq-sdk/workflows/Test/badge.svg)
+![Deps](https://img.shields.io/david/dev/Informed/verifyiq-sdk?label=dependencies)
+![NPM](https://img.shields.io/npm/v/@informed-iq/verify-iq-sdk)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+![contrib](https://img.shields.io/github/contributors/Informed/verifyiq-sdk?color=green)
+
+
 ## Getting started
 
 To install latest version
