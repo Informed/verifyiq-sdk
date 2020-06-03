@@ -9,8 +9,11 @@
 ![Test](https://github.com/Informed/verifyiq-sdk/workflows/Test/badge.svg)
 ![Deps](https://img.shields.io/david/dev/Informed/verifyiq-sdk?label=dependencies)
 ![NPM](https://img.shields.io/npm/v/@informed-iq/verify-iq-sdk)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+![Downloads](https://img.shields.io/npm/dw/@informed-iq/verify-iq-sdk)
+![Size](https://img.shields.io/bundlephobia/min/@informed-iq/verify-iq-sdk)
+![License](https://img.shields.io/npm/l/@informed-iq/verify-iq-sdk)
 ![contrib](https://img.shields.io/github/contributors/Informed/verifyiq-sdk?color=green)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 
 ## Getting started
