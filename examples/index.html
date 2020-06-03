@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
+    #root {
+      width: 100%;
+      height: 100%;
+    }
+    #buttons {
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <div id="buttons">
+    <button id="render">Render VerifyIQ</button>
+    <button id="auth-popup">SAML in PopUp</button>
+    <button id="auth-window">SAML in Window</button>
+  </div>
+
+  <div id="root"></div>
+  <script src="../dist/index.js"></script>
+  <script>
+    const viq = new VerifyIQ({
+      url: 'https://091c1f2faaad.ngrok.io'
+    });
+
+    viq.enableLogging(true);
+
+    const renderBtn = document.querySelector('#render');
+    const samlPopupBtn = document.querySelector('#auth-popup');
+    const samlWindowBtn = document.querySelector('#auth-window');
+
+    viq.on(VerifyIQ.events.Loaded, () => {
+      console.log('Frame is loaded');
+    });
+
+    samlPopupBtn.addEventListener('click', () => {
+      viq.setAuth(VerifyIQ.auth.Popup);
+    });
+    samlWindowBtn.addEventListener('click', () => {
+      viq.setAuth(VerifyIQ.auth.Tab);
+    });
+
+    renderBtn.addEventListener('click', () => {
+      viq.render(document.getElementById('root'));
+    });
+  </script>
+</body>
+</html>

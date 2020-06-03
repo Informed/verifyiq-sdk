@@ -1,0 +1,28 @@
+{
+  "name": "@informed/verify-iq-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "dev": "parcel src/index.ts --global VerifyIQ",
+    "build": "parcel build src/index.ts --global VerifyIQ",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typings": "tsc --noEmit",
+    "test": "npm run lint && npm run typings"
+  },
+  "author": "Shahen Hovhannisyan <shahen@simplytechnologies.net>",
+  "license": "ISC",
+  "engines": {
+    "node": "13.x"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.4",
+    "@typescript-eslint/eslint-plugin": "2.34.0",
+    "@typescript-eslint/parser": "2.34.0",
+    "eslint": "7.0.0",
+    "parcel-bundler": "1.12.4",
+    "typescript": "3.9.2"
+  }
+}

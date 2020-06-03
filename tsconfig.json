@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "baseUrl": "./src",
+    "removeComments": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "paths": {
+      "~/*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["./src/**/*.ts"]
+}
