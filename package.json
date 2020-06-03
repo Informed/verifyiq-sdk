@@ -19,13 +19,13 @@
     "node": "13.x"
   },
   "devDependencies": {
-    "@types/node": "^14.0.4",
+    "@types/node": "14.0.4",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
     "eslint": "7.0.0",
     "parcel-bundler": "1.12.4",
     "typescript": "3.9.2",
-    "semantic-release": "^17.0.8"
+    "semantic-release": "17.0.8"
   },
   "repository": {
     "type": "git",
