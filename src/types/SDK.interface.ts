@@ -7,6 +7,9 @@ export interface IVerifyIQ {
   setAuth(authType: AuthTypes): this;
   setCredentials(credentials: Credentials): this;
   on(event: EventsEnum, callback: EventCallback): this;
+  onWaive?(callback: EventCallback): void;
+  onPass?(callback: EventCallback): void;
+  onIncomplete?(callback: EventCallback): void;
   enableLogging(isEnabled: boolean): this;
   render(htmlElement: HTMLElement): void;
 }
