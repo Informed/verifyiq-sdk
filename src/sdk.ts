@@ -15,6 +15,7 @@ interface SDKOptions {
   onWaive?: VerificationActionCallback;
   onPass?: VerificationActionCallback;
   onIncomplete?: VerificationActionCallback;
+  onLoad?: EventCallback<VerificationActionPayload>;
 }
 
 class VerifyIQ implements IVerifyIQ {
@@ -36,6 +37,7 @@ class VerifyIQ implements IVerifyIQ {
     this.onWaive(options.onWaive);
     this.onIncomplete(options.onIncomplete);
     this.onPass(options.onPass);
+    this.onLoad(options.onLoad);
   }
 
   /**
@@ -66,14 +68,10 @@ class VerifyIQ implements IVerifyIQ {
     return this;
   }
 
-  /**
-   * Register callback for particular event
-   * @param event {EventsEnum}
-   * @param callback {EventCallback}
-   */
-  on(event: EventsEnum, callback: EventCallback) {
-    this.renderer.on(event, callback);
-    return this;
+  onLoad(callback?: EventCallback<any>) {
+    if (!callback) return;
+
+    return this.renderer.on(EventsEnum.Loaded, callback);
   }
 
   /**
@@ -81,12 +79,12 @@ class VerifyIQ implements IVerifyIQ {
    * @param callback {VerificationActionCallback}
    */
   onPass(callback?: VerificationActionCallback) {
-    return this.on(
+    if (!callback) return;
+
+    return this.renderer.on(
       EventsEnum.Pass,
       ({ verificationActionObj, reason }: VerificationActionPayload) => {
-        if (callback) {
-          callback(verificationActionObj, reason);
-        }
+        callback(verificationActionObj, reason);
       }
     );
   }
@@ -96,12 +94,12 @@ class VerifyIQ implements IVerifyIQ {
    * @param callback {VerificationActionCallback}
    */
   onWaive(callback?: VerificationActionCallback) {
-    return this.on(
+    if (!callback) return;
+
+    return this.renderer.on(
       EventsEnum.Waive,
       ({ verificationActionObj, reason }: VerificationActionPayload) => {
-        if (callback) {
-          callback(verificationActionObj, reason);
-        }
+        callback(verificationActionObj, reason);
       }
     );
   }
@@ -111,12 +109,12 @@ class VerifyIQ implements IVerifyIQ {
    * @param callback {VerificationActionCallback}
    */
   onIncomplete(callback?: VerificationActionCallback) {
-    return this.on(
+    if (!callback) return;
+
+    return this.renderer.on(
       EventsEnum.Incomplete,
       ({ verificationActionObj, reason }: VerificationActionPayload) => {
-        if (callback) {
-          callback(verificationActionObj, reason);
-        }
+        callback(verificationActionObj, reason);
       }
     );
   }

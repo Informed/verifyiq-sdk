@@ -34,8 +34,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Informed/verifyiq-sdk.git"
-  },
-  "dependencies": {
-    "@informed-iq/verify-iq-sdk": "^1.0.1"
   }
 }

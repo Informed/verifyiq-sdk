@@ -1,6 +1,6 @@
 import { IVerificationActionObj } from '~/types/verification-action.interface';
 
-export type EventCallback = (payload?: any) => void;
+export type EventCallback<T> = (payload?: T) => void;
 
 export type VerificationActionCallback = (
   verificationAction: IVerificationActionObj,

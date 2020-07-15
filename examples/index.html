@@ -45,6 +45,11 @@
           /* Stipulation action handler */
           console.log("Waive", actionObject, reason);
         },
+
+        onLoad: function (payload) {
+          /* Frame onLoad event handler */
+          console.log("Frame is loaded", payload);
+        },
       });
 
       viq.enableLogging(true);
@@ -52,10 +57,6 @@
       const renderBtn = document.querySelector("#render");
       const samlPopupBtn = document.querySelector("#auth-popup");
       const samlWindowBtn = document.querySelector("#auth-window");
-
-      viq.on(VerifyIQ.events.Loaded, (payload) => {
-        console.log("Frame is loaded");
-      });
 
       samlPopupBtn.addEventListener("click", () => {
         viq.setAuth(VerifyIQ.auth.Popup);

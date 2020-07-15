@@ -9,14 +9,14 @@ import { IPCSerializable } from '~/types/ipc.interface';
 import IpcMessage from './ipc-message.class';
 
 export interface RendererOptions {
-  element?: HTMLElement,
-  url: string
+  element?: HTMLElement;
+  url: string;
 }
 
 export interface IRenderer {
   setRoot(dom: HTMLElement): void;
   exec(command: string): void;
-  on(event: EventsEnum, callback: EventCallback): void;
+  on(event: EventsEnum, callback: EventCallback<any>): void;
   enableLogging(enabled: boolean): void;
   setAuth(authType: AuthTypes): void;
   render(): void;
@@ -27,7 +27,7 @@ class Renderer implements IRenderer {
    * EventsMap is like event bus
    * Keeps registered callbacks for each event
    */
-  private _eventsMap: Map<EventsEnum, EventCallback[]>;
+  private _eventsMap: Map<EventsEnum, EventCallback<any>[]>;
   /**
    * DOM element where frame should be injected
    */
@@ -137,15 +137,12 @@ class Renderer implements IRenderer {
    * @param event {EventsEnum}
    * @param callback {EventCallback}
    */
-  public on(event: EventsEnum, callback: EventCallback): void {
+  public on(event: EventsEnum, callback: EventCallback<any>): void {
     const callbacksArr = this._eventsMap.has(event)
       ? this._eventsMap.get(event)
       : [];
 
-    const callbacks = [
-      ...compact<EventCallback>(callbacksArr),
-      callback
-    ];
+    const callbacks = [...compact<EventCallback<any>>(callbacksArr), callback];
 
     this._eventsMap.set(event, callbacks);
   }
