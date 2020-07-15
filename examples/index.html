@@ -1,58 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    body {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-    }
-    #root {
-      width: 100%;
-      height: 100%;
-    }
-    #buttons {
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="buttons">
-    <button id="render">Render VerifyIQ</button>
-    <button id="auth-popup">SAML in PopUp</button>
-    <button id="auth-window">SAML in Window</button>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+      #buttons {
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="buttons">
+      <button id="render">Render VerifyIQ</button>
+      <button id="auth-popup">SAML in PopUp</button>
+      <button id="auth-window">SAML in Window</button>
+    </div>
 
-  <div id="root"></div>
-  <script src="../dist/index.js"></script>
-  <script>
-    const viq = new VerifyIQ({
-      url: 'https://091c1f2faaad.ngrok.io'
-    });
+    <div id="root"></div>
+    <script src="../dist/index.js"></script>
+    <script>
+      const viq = new VerifyIQ({
+        url: "https://ba4670faa379.ngrok.io",
+        onPass: function (actionObject, reason) {
+          /* Stipulation action handler */
+          console.log("Pass", actionObject, reason);
+        },
 
-    viq.enableLogging(true);
+        onIncomplete: function (actionObject, reason) {
+          /* Stipulation action handler */
+          console.log("Incomplete", actionObject, reason);
+        },
 
-    const renderBtn = document.querySelector('#render');
-    const samlPopupBtn = document.querySelector('#auth-popup');
-    const samlWindowBtn = document.querySelector('#auth-window');
+        onWaive: function (actionObject, reason) {
+          /* Stipulation action handler */
+          console.log("Waive", actionObject, reason);
+        },
 
-    viq.on(VerifyIQ.events.Loaded, () => {
-      console.log('Frame is loaded');
-    });
+        onLoad: function (payload) {
+          /* Frame onLoad event handler */
+          console.log("Frame is loaded", payload);
+        },
+      });
 
-    samlPopupBtn.addEventListener('click', () => {
-      viq.setAuth(VerifyIQ.auth.Popup);
-    });
-    samlWindowBtn.addEventListener('click', () => {
-      viq.setAuth(VerifyIQ.auth.Tab);
-    });
+      viq.enableLogging(true);
 
-    renderBtn.addEventListener('click', () => {
-      viq.render(document.getElementById('root'));
-    });
-  </script>
-</body>
+      const renderBtn = document.querySelector("#render");
+      const samlPopupBtn = document.querySelector("#auth-popup");
+      const samlWindowBtn = document.querySelector("#auth-window");
+
+      samlPopupBtn.addEventListener("click", () => {
+        viq.setAuth(VerifyIQ.auth.Popup);
+      });
+      samlWindowBtn.addEventListener("click", () => {
+        viq.setAuth(VerifyIQ.auth.Tab);
+      });
+
+      renderBtn.addEventListener("click", () => {
+        viq.render(document.getElementById("root"));
+      });
+    </script>
+  </body>
 </html>

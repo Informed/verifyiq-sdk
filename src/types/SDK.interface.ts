@@ -1,12 +1,17 @@
 import { Credentials } from './credentials.interface';
-import { EventCallback } from './callback.interface';
-import { EventsEnum } from './events.enum';
 import { AuthTypes } from './auth-types.enum';
+import {
+  VerificationActionCallback,
+  EventCallback,
+} from '~/types/callback.interface';
 
 export interface IVerifyIQ {
   setAuth(authType: AuthTypes): this;
   setCredentials(credentials: Credentials): this;
-  on(event: EventsEnum, callback: EventCallback): this;
+  onWaive?(callback?: VerificationActionCallback): void;
+  onPass?(callback?: VerificationActionCallback): void;
+  onIncomplete?(callback?: VerificationActionCallback): void;
+  onLoad?(callback?: EventCallback<any>): void;
   enableLogging(isEnabled: boolean): this;
   render(htmlElement: HTMLElement): void;
 }
