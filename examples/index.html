@@ -30,7 +30,9 @@
     <script src="../dist/index.js"></script>
     <script>
       const viq = new VerifyIQ({
-        url: "https://ba4670faa379.ngrok.io",
+        url: "https://a317e41c7f3f.ngrok.io",
+        applicationId:
+          "x2sample-3-Q2___Q4_Paystub_with_unnecessary_Prior_Year_W_2__No_Additional_Earnings-2020-04-09T10:37:22",
         onPass: function (actionObject, reason) {
           /* Stipulation action handler */
           console.log("Pass", actionObject, reason);
@@ -47,7 +49,7 @@
         },
 
         onLoad: function (payload) {
-          /* Frame onLoad event handler */
+          /* Iframe onLoad event handler */
           console.log("Frame is loaded", payload);
         },
       });

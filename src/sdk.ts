@@ -12,6 +12,7 @@ import { Nullable } from './types/nullable';
 
 interface SDKOptions {
   url: string;
+  applicationId: string;
   onWaive?: VerificationActionCallback;
   onPass?: VerificationActionCallback;
   onIncomplete?: VerificationActionCallback;
@@ -32,6 +33,7 @@ class VerifyIQ implements IVerifyIQ {
   constructor(options: SDKOptions) {
     this.renderer = new Renderer({
       url: options.url,
+      applicationId: options.applicationId,
     });
     this.credentials = null;
     this.onWaive(options.onWaive);
@@ -68,6 +70,10 @@ class VerifyIQ implements IVerifyIQ {
     return this;
   }
 
+  /**
+   * Register callback for iframe onLoad event
+   * @param callback {VerificationActionCallback}
+   */
   onLoad(callback?: EventCallback<any>) {
     if (!callback) return;
 
