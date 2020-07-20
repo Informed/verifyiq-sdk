@@ -15,47 +15,48 @@
 ![contrib](https://img.shields.io/github/contributors/Informed/verifyiq-sdk?color=green)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-
 ## Getting started
 
 To install latest version
+
 ```sh
 $ yarn add @informed-iq/verify-iq-sdk
 ```
-
 
 ## Usage
 
 #### Simplest way
 
 **1. Instantiate SDK**
+
 ```js
 const viq = new VerifyIQ({
   url: 'url-to-verify-iq'
+  applicationId: "some-application-id",
+  onPass: (actionObject, reason) => {},
+  onIncomplete: (actionObject, reason) => {},
+  onWaive: (actionObject, reason) => {},
+  onLoad: (payload) => {},
 });
 ```
 
 **2. Add root DOM element in the HTML**
+
 ```html
 <div id="verify-iq-root"></div>
 ```
 
 **3. Render VerifyIQ in the given DOM element**
+
 ```js
-const verifyIQRoot = document.querySelector('#verify-iq-root');
+const verifyIQRoot = document.querySelector("#verify-iq-root");
 viq.render(verifyIQRoot);
 ```
 
 #### Configure SAML Login
+
 ```js
 viq.setAuth(VerifyIQ.auth.Popup);
-```
-
-#### Add event listeners
-```js
-viq.on(VerifyIQ.events.Loaded, () => {
-  console.log('VerifyIQ Loaded');
-});
 ```
 
 ## Constants
@@ -64,15 +65,18 @@ viq.on(VerifyIQ.events.Loaded, () => {
 
 Accessible as **`VerifyIQ.auth`**;
 
-| Auth | Description |
-| ------ | ------ |
+| Auth  | Description                                         |
+| ----- | --------------------------------------------------- |
 | Popup | Set SAML auth to be processable in the Popup window |
-| Tab | Set SAML auth to be processable in the separate tab |
+| Tab   | Set SAML auth to be processable in the separate tab |
 
 ### EventTypes
 
 Accessible as **`VerifyIQ.events`**;
 
-| Event | Description |
-| ------ | ------ |
-| Loaded | Event represents VerifyIQ loaded event and will trigger on first contentful paint |
+| Event      | Description                                                                                   |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| Loaded     | Event represents VerifyIQ loaded event and will trigger on first contentful paint             |
+| Pass       | Event represents VerifyIQ pass event and will trigger on verification pass action             |
+| Incomplete | Event represents VerifyIQ incomplete event and will trigger on verification incomplete action |
+| Waive      | Event represents VerifyIQ waive event and will trigger on verification waive action           |

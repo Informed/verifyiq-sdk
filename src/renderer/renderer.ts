@@ -11,6 +11,7 @@ import IpcMessage from './ipc-message.class';
 export interface RendererOptions {
   element?: HTMLElement;
   url: string;
+  applicationId: string;
 }
 
 export interface IRenderer {
@@ -36,6 +37,8 @@ class Renderer implements IRenderer {
    * URL of the frame from where should be loaded
    */
   private _url: string;
+
+  private _applicationId: string;
   /**
    * Frame DOM element
    */
@@ -49,6 +52,7 @@ class Renderer implements IRenderer {
     this._eventsMap = new Map();
     this._dom = options.element || null;
     this._url = options.url;
+    this._applicationId = options.applicationId;
     this._frame = null;
     this._logger = new Logger(false);
 
@@ -100,7 +104,7 @@ class Renderer implements IRenderer {
     frame.style.width = '100%';
     frame.style.height = '100%';
     frame.id = INJECTED_UI_ID;
-    frame.src = this._url;
+    frame.src = `${this._url}/applications/${this._applicationId}`;
     frame.onload = () => {
       this._frame = frame.contentWindow!;
     };
