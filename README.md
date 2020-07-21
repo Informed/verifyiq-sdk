@@ -31,8 +31,12 @@ $ yarn add @informed-iq/verify-iq-sdk
 
 ```js
 const viq = new VerifyIQ({
-  url: 'url-to-verify-iq'
-  applicationId: "some-application-id",
+  authToken: 'Basic jcA897afas91jajk2…'
+  environment: VerifyIQ.Staging,
+  
+  actionCallbackWebhookUrl: actionNotificationEndpointUrl,
+  collectedDocumentWebhookUrl: collectedDocumentEndpointUrl,
+  
   onPass: (actionObject, reason) => {},
   onIncomplete: (actionObject, reason) => {},
   onWaive: (actionObject, reason) => {},
@@ -46,33 +50,45 @@ const viq = new VerifyIQ({
 <div id="verify-iq-root"></div>
 ```
 
-**3. Render VerifyIQ in the given DOM element**
 
-```js
-const verifyIQRoot = document.querySelector("#verify-iq-root");
-viq.render(verifyIQRoot);
-```
-
-#### Configure SAML Login
+**3. Configure SAML Login
 
 ```js
 viq.setAuth(VerifyIQ.auth.Popup);
 ```
 
+**4. Render VerifyIQ in the given DOM element**
+
+```js
+const verifyIQRoot = document.querySelector("#verify-iq-root");
+viq.renderApplicationId(verifyIQRoot, applicationId);
+```
+
+
 ## Constants
 
 ### AuthTypes
 
-Accessible as **`VerifyIQ.auth`**;
+Accessible as **`VerifyIQ.<Auth-type>`**;
 
 | Auth  | Description                                         |
 | ----- | --------------------------------------------------- |
 | Popup | Set SAML auth to be processable in the Popup window |
 | Tab   | Set SAML auth to be processable in the separate tab |
 
+### Environment
+
+Accessible as **`VerifyIQ.<Env>`**;
+
+| Env  | Description                                         |
+| ----- | --------------------------------------------------- |
+| Staging | Set the SDK to run in the Staging/Testing environment |
+| Production | Set the SDK to run in the Production environment |
+
+
 ### EventTypes
 
-Accessible as **`VerifyIQ.events`**;
+Accessible as **`VerifyIQ.<Event>`**;
 
 | Event      | Description                                                                                   |
 | ---------- | --------------------------------------------------------------------------------------------- |
