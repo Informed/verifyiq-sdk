@@ -51,7 +51,7 @@ const viq = new VerifyIQ({
 ```
 
 
-**3. Configure SAML Login
+**3. Configure SAML Login Method**
 
 ```js
 viq.setAuth(VerifyIQ.auth.Popup);
