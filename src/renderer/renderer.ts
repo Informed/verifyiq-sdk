@@ -7,11 +7,11 @@ import Logger from '~/utils/logger';
 import { AuthTypes } from '~/types/auth-types.enum';
 import { IPCSerializable } from '~/types/ipc.interface';
 import IpcMessage from './ipc-message.class';
+import { isObject } from '../utils/isObject';
 
 export interface RendererOptions {
   element?: HTMLElement;
   url: string;
-  applicationId: string;
 }
 
 export interface IRenderer {
@@ -38,7 +38,7 @@ class Renderer implements IRenderer {
    */
   private _url: string;
 
-  private _applicationId: string;
+  private _applicationId!: string;
   /**
    * Frame DOM element
    */
@@ -52,12 +52,19 @@ class Renderer implements IRenderer {
     this._eventsMap = new Map();
     this._dom = options.element || null;
     this._url = options.url;
-    this._applicationId = options.applicationId;
     this._frame = null;
     this._logger = new Logger(false);
 
     this.onEventReceived = this.onEventReceived.bind(this);
     window.addEventListener('message', this.onEventReceived);
+  }
+
+  /**
+   * Initializes @property _applicationId property
+   * @param applicationId {String}
+   */
+  set applicationId(applicationId: string) {
+    this._applicationId = applicationId;
   }
 
   /**
@@ -132,7 +139,11 @@ class Renderer implements IRenderer {
       return;
     }
     this._eventsMap.get(messageAsEvent)?.forEach((callback) => {
-      callback(payload);
+      const formattedPayload = isObject(payload)
+        ? Object.values(payload)
+        : [payload];
+
+      callback(...formattedPayload);
     });
   }
 
