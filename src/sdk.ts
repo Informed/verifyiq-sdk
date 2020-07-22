@@ -1,12 +1,13 @@
 import { IVerifyIQ } from './types/SDK.interface';
-import { AuthTypes } from '~/types/auth-types.enum';
-import { Credentials } from '~/types/credentials.interface';
-import { VerificationActionPayload } from '~/types/verification-action.interface';
+import { AuthTypes } from './types/auth-types.enum';
+import { Credentials } from './types/credentials.interface';
+import { VerificationActionPayload } from './types/verification-action.interface';
 import {
   EventCallback,
   VerificationActionCallback,
-} from '~/types/callback.interface';
-import { EventsEnum } from '~/types/events.enum';
+  DocumentRequestCallback,
+} from './types/callback.interface';
+import { EventsEnum } from './types/events.enum';
 import Renderer from './renderer/renderer';
 import { Nullable } from './types/nullable';
 
@@ -16,6 +17,7 @@ interface SDKOptions {
   onWaive?: VerificationActionCallback;
   onPass?: VerificationActionCallback;
   onIncomplete?: VerificationActionCallback;
+  onDocumentRequestedViaSms?: DocumentRequestCallback;
   onLoad?: EventCallback<VerificationActionPayload>;
 }
 
@@ -40,6 +42,7 @@ class VerifyIQ implements IVerifyIQ {
     this.onIncomplete(options.onIncomplete);
     this.onPass(options.onPass);
     this.onLoad(options.onLoad);
+    this.onDocumentRequestedViaSms(options.onDocumentRequestedViaSms);
   }
 
   /**
@@ -74,17 +77,27 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for iframe onLoad event
    * @param callback {VerificationActionCallback}
    */
-  onLoad(callback?: EventCallback<any>) {
+  private onLoad(callback?: EventCallback<any>) {
     if (!callback) return;
 
     return this.renderer.on(EventsEnum.Loaded, callback);
   }
 
   /**
+   * Register callback for RequestIQ SMS Send event
+   * @param callback {DocumentRequestCallback}
+   */
+  private onDocumentRequestedViaSms(callback?: DocumentRequestCallback) {
+    if (!callback) return;
+
+    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, callback);
+  }
+
+  /**
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onPass(callback?: VerificationActionCallback) {
+  private onPass(callback?: VerificationActionCallback) {
     if (!callback) return;
 
     return this.renderer.on(
@@ -99,7 +112,7 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onWaive(callback?: VerificationActionCallback) {
+  private onWaive(callback?: VerificationActionCallback) {
     if (!callback) return;
 
     return this.renderer.on(
@@ -114,7 +127,7 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onIncomplete(callback?: VerificationActionCallback) {
+  private onIncomplete(callback?: VerificationActionCallback) {
     if (!callback) return;
 
     return this.renderer.on(

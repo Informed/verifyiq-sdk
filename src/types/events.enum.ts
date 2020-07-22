@@ -3,4 +3,6 @@ export enum EventsEnum {
   Pass = 'pass',
   Incomplete = 'incomplete',
   Waive = 'waive',
+
+  DocumentRequestedViaSMS = 'DocumentRequestedViaSMS',
 }

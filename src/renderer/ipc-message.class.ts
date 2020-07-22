@@ -1,4 +1,4 @@
-import { IPCSerializable } from '~/types/ipc.interface';
+import { IPCSerializable } from '../types/ipc.interface';
 
 class IpcMessage implements IPCSerializable {
   static fromEvent(event: MessageEvent) {
