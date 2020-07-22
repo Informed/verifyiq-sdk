@@ -4,13 +4,12 @@
     "module": "commonjs",
     "baseUrl": "./src",
     "removeComments": true,
+    "declarationDir": "dist/types",
     "strict": true,
+    "declaration": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "paths": {
-      "~/*": ["./*"]
-    }
+    "skipLibCheck": true
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.ts"]

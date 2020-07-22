@@ -1,9 +1,12 @@
 import { IVerifyIQ } from './types/SDK.interface';
-import { AuthTypes } from '~/types/auth-types.enum';
-import { Credentials } from '~/types/credentials.interface';
-import { VerificationActionPayload } from '~/types/verification-action.interface';
-import { EventCallback } from '~/types/callback.interface';
-import { EventsEnum } from '~/types/events.enum';
+import { AuthTypes } from './types/auth-types.enum';
+import { Credentials } from './types/credentials.interface';
+import { VerificationActionPayload } from './types/verification-action.interface';
+import {
+  EventCallback,
+  DocumentRequestCallback,
+} from './types/callback.interface';
+import { EventsEnum } from './types/events.enum';
 import Renderer from './renderer/renderer';
 import Api from './api/api';
 import { Nullable } from './types/nullable';
@@ -13,9 +16,10 @@ interface SDKOptions {
   url: string;
   actionCallbackWebhookUrl: string;
   environment: ApiEnvironment;
-  onWaive?: EventCallback<VerificationActionPayload>;
-  onPass?: EventCallback<VerificationActionPayload>;
-  onIncomplete?: EventCallback<VerificationActionPayload>;
+  onWaive?: EventCallback<any>;
+  onPass?: EventCallback<any>;
+  onIncomplete?: EventCallback<any>;
+  onDocumentRequestedViaSms?: DocumentRequestCallback;
   onLoad?: EventCallback<any>;
 }
 
@@ -45,6 +49,7 @@ class VerifyIQ implements IVerifyIQ {
     this.onIncomplete(options.onIncomplete);
     this.onPass(options.onPass);
     this.onLoad(options.onLoad);
+    this.onDocumentRequestedViaSms(options.onDocumentRequestedViaSms);
   }
 
   public static staging = ApiEnvironment.Staging;
@@ -82,10 +87,20 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for iframe onLoad event
    * @param callback {VerificationActionCallback}
    */
-  onLoad(callback?: EventCallback<any>) {
+  private onLoad(callback?: EventCallback<any>) {
     if (!callback) return;
 
     return this.renderer.on(EventsEnum.Loaded, callback);
+  }
+
+  /**
+   * Register callback for RequestIQ SMS Send event
+   * @param callback {DocumentRequestCallback}
+   */
+  private onDocumentRequestedViaSms(callback?: DocumentRequestCallback) {
+    if (!callback) return;
+
+    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, callback);
   }
 
   /**

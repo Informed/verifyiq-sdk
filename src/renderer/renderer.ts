@@ -1,12 +1,12 @@
-import { EventsEnum } from '~/types/events.enum';
-import { EventCallback } from '~/types/callback.interface';
-import { compact } from '~/utils/compact';
-import { Nullable } from '~/types/nullable';
-import { INJECTED_UI_ID } from '~/constants';
-import Logger from '~/utils/logger';
-import { AuthTypes } from '~/types/auth-types.enum';
-import { IPCSerializable } from '~/types/ipc.interface';
-import IpcMessage from './ipc-message.class';
+import { EventsEnum } from '../types/events.enum';
+import { EventCallback } from '../types/callback.interface';
+import { compact } from '../utils/compact';
+import { Nullable } from '../types/nullable';
+import { INJECTED_UI_ID } from '../constants';
+import Logger from '../utils/logger';
+import { AuthTypes } from '../types/auth-types.enum';
+import { IPCSerializable } from '../types/ipc.interface';
+import { IpcMessage } from '../types/ipc.interface';
 import { isObject } from '../utils/isObject';
 
 export interface RendererOptions {

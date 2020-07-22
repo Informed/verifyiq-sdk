@@ -17,7 +17,7 @@ type APICallParams = {
 };
 
 type MapEnvSubdomainType = {
-  [key: ApiEnvironmentType]: string;
+  [key: string]: string;
 };
 
 const mapEnvToSubdomain: MapEnvSubdomainType = {
@@ -60,7 +60,8 @@ class API {
 
   private _constructWithEnvironment(apiInfo: ApiInfo) {
     const { version, environment, authorization } = apiInfo;
-    const subdomain = mapEnvToSubdomain[environment] || environment;
+    const subdomain =
+      mapEnvToSubdomain[environment as ApiEnvironmentType] || environment;
 
     this._apiV = `/api/v${version}`;
     this._endpoint = `https://${subdomain}.${ORIGIN}${this._apiV}`;
@@ -96,6 +97,7 @@ class API {
   private _makeApiCall = ({
     url = '',
     headers,
+    // eslint-disable-next-line no-unused-vars
     fullUrl,
     ...params
   }: APICallParams) => {

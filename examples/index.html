@@ -30,7 +30,7 @@
     <script src="../dist/index.js"></script>
     <script>
       const viq = new VerifyIQ({
-        url: "https://25dfa8812f8c.ngrok.io",
+        url: "https://5d34c2869561.ngrok.io",
 
         actionCallbackWebhookUrl: "actionCallbackWebhookUrl",
 
@@ -39,6 +39,10 @@
         onPass: function (actionObject, reason) {
           /* Stipulation action handler */
           console.log("Pass", actionObject, reason);
+        },
+
+        onDocumentRequestedViaSms: (stipObjects) => {
+          console.log("onRequestDocumentsViaSms", stipObjects);
         },
 
         onIncomplete: function (actionObject, reason) {
