@@ -4,7 +4,7 @@
     "module": "commonjs",
     "baseUrl": "./src",
     "removeComments": true,
-    "declarationDir": "typings",
+    "declarationDir": "dist/types",
     "strict": true,
     "declaration": true,
     "alwaysStrict": true,
