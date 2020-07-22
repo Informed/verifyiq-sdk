@@ -6,7 +6,7 @@ import { INJECTED_UI_ID } from '../constants';
 import Logger from '../utils/logger';
 import { AuthTypes } from '../types/auth-types.enum';
 import { IPCSerializable } from '../types/ipc.interface';
-import IpcMessage from './ipc-message.class';
+import { IpcMessage } from '../types/ipc.interface';
 
 export interface RendererOptions {
   element?: HTMLElement;
