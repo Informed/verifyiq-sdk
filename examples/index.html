@@ -30,12 +30,16 @@
     <script src="../dist/index.js"></script>
     <script>
       const viq = new VerifyIQ({
-        url: "https://a317e41c7f3f.ngrok.io",
+        url: "https://9fedb78fa905.ngrok.io",
         applicationId:
           "x2sample-3-Q2___Q4_Paystub_with_unnecessary_Prior_Year_W_2__No_Additional_Earnings-2020-04-09T10:37:22",
         onPass: function (actionObject, reason) {
           /* Stipulation action handler */
           console.log("Pass", actionObject, reason);
+        },
+
+        onDocumentRequestedViaSms: (stipObjects) => {
+          console.log('onRequestDocumentsViaSms', stipObjects);
         },
 
         onIncomplete: function (actionObject, reason) {
