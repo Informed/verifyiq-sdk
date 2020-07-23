@@ -5,5 +5,5 @@ export interface IVerifyIQ {
   setAuth(authType: AuthTypes): this;
   setCredentials(credentials: Credentials): this;
   enableLogging(isEnabled: boolean): this;
-  render(htmlElement: HTMLElement): void;
+  renderApplicationId(htmlElement: HTMLElement, applicationId: string): void;
 }

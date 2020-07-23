@@ -30,16 +30,19 @@
     <script src="../dist/index.js"></script>
     <script>
       const viq = new VerifyIQ({
-        url: "https://9fedb78fa905.ngrok.io",
-        applicationId:
-          "x2sample-3-Q2___Q4_Paystub_with_unnecessary_Prior_Year_W_2__No_Additional_Earnings-2020-04-09T10:37:22",
+        url: "https://5d34c2869561.ngrok.io",
+
+        actionCallbackWebhookUrl: "actionCallbackWebhookUrl",
+
+        environment: VerifyIQ.Staging,
+
         onPass: function (actionObject, reason) {
           /* Stipulation action handler */
           console.log("Pass", actionObject, reason);
         },
 
         onDocumentRequestedViaSms: (stipObjects) => {
-          console.log('onRequestDocumentsViaSms', stipObjects);
+          console.log("onRequestDocumentsViaSms", stipObjects);
         },
 
         onIncomplete: function (actionObject, reason) {
@@ -72,7 +75,10 @@
       });
 
       renderBtn.addEventListener("click", () => {
-        viq.render(document.getElementById("root"));
+        const applicationId =
+          "x2sample-3-Q2___Q4_Paystub_with_unnecessary_Prior_Year_W_2__No_Additional_Earnings-2020-04-09T10:37:22";
+
+        viq.renderApplicationId(document.getElementById("root"), applicationId);
       });
     </script>
   </body>
