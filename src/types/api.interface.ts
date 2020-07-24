@@ -7,3 +7,9 @@ export type ApiInfo = {
   environment?: ApiEnvironment;
   authorization?: string;
 };
+
+
+export interface IApi {
+  setActionWebhookUrl(webhookUrl: string): void;
+  syncActionWebhook(payload: unknown): Promise<unknown>;
+}

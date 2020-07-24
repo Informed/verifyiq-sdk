@@ -2,7 +2,8 @@ import { ApiEnvironment } from '../constants/api.constants';
 import type {
   ApiInfo,
   ApiEnvironment as ApiEnvironmentType,
-} from '../types/api-info';
+  IApi,
+} from '../types/api.interface';
 
 const ORIGIN = 'driveinformed.com';
 
@@ -10,7 +11,6 @@ type APICallParams = {
   url?: string;
   method: string;
   body?: string;
-  fullUrl?: string;
   headers?: {
     [key: string]: string;
   };
@@ -27,7 +27,7 @@ const mapEnvToSubdomain: MapEnvSubdomainType = {
 /**
  * @description API class
  */
-class API {
+class API implements IApi {
   /**
    * Final Endpoint
    */
@@ -42,6 +42,11 @@ class API {
    * Authorization for Informed API
    */
   _authorization!: string;
+
+  /**
+   * Registered Action webhook url
+   */
+  _actionWebhookUrl?: string;
 
   constructor(apiInfo: ApiInfo) {
     if (apiInfo.host) {
@@ -72,7 +77,7 @@ class API {
    * @description Getter for host
    * @returns {string}
    */
-  get host() {
+  get host(): string {
     return this._endpoint;
   }
 
@@ -80,7 +85,7 @@ class API {
    * @description Getter for authorization
    * @returns {string}
    */
-  get authorization() {
+  get authorization(): string {
     return this._authorization;
   }
 
@@ -97,10 +102,8 @@ class API {
   private _makeApiCall = ({
     url = '',
     headers,
-    // eslint-disable-next-line no-unused-vars
-    fullUrl,
     ...params
-  }: APICallParams) => {
+  }: APICallParams): Promise<Response> => {
     const _headers = new Headers({
       ...headers,
     });
@@ -117,12 +120,27 @@ class API {
     });
   };
 
+  /**
+   * Register actionWebhookUrl
+   * @param webhookUrl {String}
+   */
+  setActionWebhookUrl(webhookUrl: string): void {
+    this._actionWebhookUrl = webhookUrl;
+  }
+
   // @TODO(mihran):: provide valid url
-  actionCallbackWebhook = (payload: any) => {
+  syncActionWebhook = (payload: unknown) => {
+    if (!this._actionWebhookUrl) {
+      return Promise.resolve(null);
+    }
+
     const apiAction = {
       url: '/',
       method: 'POST',
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        url: this._actionWebhookUrl!,
+        payload
+      }),
       headers: {
         'Content-Type': 'application/json',
       },

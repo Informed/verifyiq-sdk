@@ -11,11 +11,15 @@ import Renderer from './renderer/renderer';
 import Api from './api/api';
 import { Nullable } from './types/nullable';
 import { ApiEnvironment } from './constants/api.constants';
+import { ApiVersion } from './types/api.interface';
+import invariant from './utils/invariant';
+
 
 interface SDKOptions {
   url: string;
-  actionCallbackWebhookUrl: string;
+  actionCallbackWebhookUrl?: string;
   environment: ApiEnvironment;
+  version: ApiVersion;
   onWaive?: EventCallback<any>;
   onPass?: EventCallback<any>;
   onIncomplete?: EventCallback<any>;
@@ -40,9 +44,13 @@ class VerifyIQ implements IVerifyIQ {
   private credentials: Nullable<Credentials>;
 
   constructor(options: SDKOptions) {
+    invariant(!!options.environment, 'Environment is required');
+    invariant(!!options.version, 'API Version is required');
+
     this.renderer = new Renderer({
       url: options.url,
     });
+
     this.api = new Api({ environment: options.environment });
     this.credentials = null;
     this.onWaive(options.onWaive);
@@ -50,10 +58,14 @@ class VerifyIQ implements IVerifyIQ {
     this.onPass(options.onPass);
     this.onLoad(options.onLoad);
     this.onDocumentRequestedViaSms(options.onDocumentRequestedViaSms);
+
+    if (options.actionCallbackWebhookUrl) {
+      this.api.setActionWebhookUrl(options.actionCallbackWebhookUrl);
+    }
   }
 
-  public static staging = ApiEnvironment.Staging;
-  public static production = ApiEnvironment.Production;
+  public static Staging = ApiEnvironment.Staging;
+  public static Production = ApiEnvironment.Production;
 
   /**
    * Enable/Disable logging
@@ -83,6 +95,13 @@ class VerifyIQ implements IVerifyIQ {
     return this;
   }
 
+  private wrapWithActionWebhook<T>(fn: EventCallback<T>): EventCallback<T> {
+    return (...args) => {
+      this.api.syncActionWebhook(args);
+      return fn(...args);
+    };
+  }
+
   /**
    * Register callback for iframe onLoad event
    * @param callback {VerificationActionCallback}
@@ -90,7 +109,7 @@ class VerifyIQ implements IVerifyIQ {
   private onLoad(callback?: EventCallback<any>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Loaded, callback);
+    return this.renderer.on(EventsEnum.Loaded, this.wrapWithActionWebhook(callback));
   }
 
   /**
@@ -100,7 +119,7 @@ class VerifyIQ implements IVerifyIQ {
   private onDocumentRequestedViaSms(callback?: DocumentRequestCallback) {
     if (!callback) return;
 
-    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, callback);
+    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, this.wrapWithActionWebhook(callback));
   }
 
   /**
@@ -110,7 +129,7 @@ class VerifyIQ implements IVerifyIQ {
   onPass(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Pass, callback);
+    return this.renderer.on(EventsEnum.Pass, this.wrapWithActionWebhook(callback));
   }
 
   /**
@@ -120,7 +139,7 @@ class VerifyIQ implements IVerifyIQ {
   onWaive(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Waive, callback);
+    return this.renderer.on(EventsEnum.Waive, this.wrapWithActionWebhook(callback));
   }
 
   /**
@@ -130,7 +149,7 @@ class VerifyIQ implements IVerifyIQ {
   onIncomplete(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Incomplete, callback);
+    return this.renderer.on(EventsEnum.Incomplete, this.wrapWithActionWebhook(callback));
   }
 
   /**
