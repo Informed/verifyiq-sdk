@@ -3,13 +3,14 @@ import type {
   ApiInfo,
   ApiEnvironment as ApiEnvironmentType,
   IApi,
+  PartnerResponse,
 } from '../types/api.interface';
 
 const ORIGIN = 'driveinformed.com';
 
 type APICallParams = {
   url?: string;
-  method: string;
+  method: 'GET' | 'POST' | 'PUT';
   body?: string;
   headers?: {
     [key: string]: string;
@@ -34,11 +35,6 @@ class API implements IApi {
   _endpoint!: string;
 
   /**
-   * Supported API version
-   */
-  _apiV!: string;
-
-  /**
    * Authorization for Informed API
    */
   _authorization!: string;
@@ -58,18 +54,16 @@ class API implements IApi {
   }
 
   private _constructWithOrigin(apiInfo: ApiInfo) {
-    this._apiV = '/api';
-    this._endpoint = `${apiInfo.host}${this._apiV}`;
+    this._endpoint = `${apiInfo.host}/api`;
     this._authorization = apiInfo.authorization || '';
   }
 
   private _constructWithEnvironment(apiInfo: ApiInfo) {
-    const { version, environment, authorization } = apiInfo;
+    const { environment, authorization } = apiInfo;
     const subdomain =
       mapEnvToSubdomain[environment as ApiEnvironmentType] || environment;
 
-    this._apiV = `/api/v${version}`;
-    this._endpoint = `https://${subdomain}.${ORIGIN}${this._apiV}`;
+    this._endpoint = `https://${subdomain}.${ORIGIN}/api`;
     this._authorization = authorization || '';
   }
 
@@ -134,7 +128,7 @@ class API implements IApi {
       return Promise.resolve(null);
     }
 
-    const apiAction = {
+    const apiAction: APICallParams = {
       url: '/',
       method: 'POST',
       body: JSON.stringify({
@@ -148,6 +142,22 @@ class API implements IApi {
 
     return this._makeApiCall(apiAction);
   };
+
+  getPartner(): Promise<PartnerResponse> {
+    const apiAction: APICallParams = {
+      url: '/verifyiq_url',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    return this._makeApiCall(apiAction)
+      .then((response) => {
+        if (!response.ok) { throw response; }
+        return response.json();
+      });
+  }
 }
 
 export default API;

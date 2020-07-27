@@ -1,6 +1,5 @@
 import { IVerifyIQ } from './types/SDK.interface';
 import { AuthTypes } from './types/auth-types.enum';
-import { Credentials } from './types/credentials.interface';
 import { VerificationActionPayload } from './types/verification-action.interface';
 import {
   EventCallback,
@@ -9,17 +8,15 @@ import {
 import { EventsEnum } from './types/events.enum';
 import Renderer from './renderer/renderer';
 import Api from './api/api';
-import { Nullable } from './types/nullable';
 import { ApiEnvironment } from './constants/api.constants';
-import { ApiVersion } from './types/api.interface';
 import invariant from './utils/invariant';
 
 
 interface SDKOptions {
   url: string;
+  authToken: string;
   actionCallbackWebhookUrl?: string;
   environment: ApiEnvironment;
-  version: ApiVersion;
   onWaive?: EventCallback<any>;
   onPass?: EventCallback<any>;
   onIncomplete?: EventCallback<any>;
@@ -38,21 +35,17 @@ class VerifyIQ implements IVerifyIQ {
    */
   private renderer: Renderer;
 
-  /**
-   * Auth credentials of the SDK
-   */
-  private credentials: Nullable<Credentials>;
-
   constructor(options: SDKOptions) {
     invariant(!!options.environment, 'Environment is required');
-    invariant(!!options.version, 'API Version is required');
+    invariant(!!options.authToken, 'authToken is required');
 
-    this.renderer = new Renderer({
-      url: options.url,
+    this.renderer = new Renderer();
+
+    this.api = new Api({
+      environment: options.environment,
+      authorization: options.authToken,
     });
 
-    this.api = new Api({ environment: options.environment });
-    this.credentials = null;
     this.onWaive(options.onWaive);
     this.onIncomplete(options.onIncomplete);
     this.onPass(options.onPass);
@@ -62,6 +55,8 @@ class VerifyIQ implements IVerifyIQ {
     if (options.actionCallbackWebhookUrl) {
       this.api.setActionWebhookUrl(options.actionCallbackWebhookUrl);
     }
+
+    this.initPartner();
   }
 
   public static Staging = ApiEnvironment.Staging;
@@ -85,16 +80,19 @@ class VerifyIQ implements IVerifyIQ {
     return this;
   }
 
-  /**
-   * Define credentials for SDK
-   * Should be defined before render
-   * @param credentials {Credentials}
-   */
-  setCredentials(credentials: Credentials) {
-    this.credentials = credentials;
-    return this;
+  private initPartner(): void {
+    this.api.getPartner()
+      .then((partner) => {
+        this.renderer.setUrl(partner.url);
+      });
   }
 
+  /**
+   * Wraps callback function with another function
+   * Which sends request to actionWebhookUrl before
+   * executing callback function
+   * @param fn {Function} - Callback function
+   */
   private wrapWithActionWebhook<T>(fn: EventCallback<T>): EventCallback<T> {
     return (...args) => {
       this.api.syncActionWebhook(args);
