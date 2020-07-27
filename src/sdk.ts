@@ -41,6 +41,10 @@ class VerifyIQ implements IVerifyIQ {
 
     this.renderer = new Renderer();
 
+    if (options.url) {
+      this.renderer.setUrl(options.url);
+    }
+
     this.api = new Api({
       environment: options.environment,
       authorization: options.authToken,
@@ -56,7 +60,9 @@ class VerifyIQ implements IVerifyIQ {
       this.api.setActionWebhookUrl(options.actionCallbackWebhookUrl);
     }
 
-    this.initPartner();
+    if (!options.url) {
+      this.initPartner();
+    }
   }
 
   public static Staging = ApiEnvironment.Staging;
@@ -93,9 +99,19 @@ class VerifyIQ implements IVerifyIQ {
    * executing callback function
    * @param fn {Function} - Callback function
    */
-  private wrapWithActionWebhook<T>(fn: EventCallback<T>): EventCallback<T> {
+  private wrapWithActionWebhook<T>(fn: EventCallback<T>, event: EventsEnum): EventCallback<T> {
     return (...args) => {
-      this.api.syncActionWebhook(args);
+      const payload: { [key: string]: unknown } = {
+        ...args[0],
+        status: event,
+      };
+
+      if (event === EventsEnum.Incomplete) {
+        // @ts-ignore
+        payload.comment = args[1];
+      }
+
+      this.api.syncActionWebhook(payload);
       return fn(...args);
     };
   }
@@ -107,7 +123,7 @@ class VerifyIQ implements IVerifyIQ {
   private onLoad(callback?: EventCallback<any>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Loaded, this.wrapWithActionWebhook(callback));
+    return this.renderer.on(EventsEnum.Loaded, callback);
   }
 
   /**
@@ -117,7 +133,7 @@ class VerifyIQ implements IVerifyIQ {
   private onDocumentRequestedViaSms(callback?: DocumentRequestCallback) {
     if (!callback) return;
 
-    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, this.wrapWithActionWebhook(callback));
+    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, this.wrapWithActionWebhook(callback, EventsEnum.DocumentRequestedViaSMS));
   }
 
   /**
@@ -127,7 +143,7 @@ class VerifyIQ implements IVerifyIQ {
   onPass(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Pass, this.wrapWithActionWebhook(callback));
+    return this.renderer.on(EventsEnum.Pass, this.wrapWithActionWebhook(callback, EventsEnum.Pass));
   }
 
   /**
@@ -137,7 +153,7 @@ class VerifyIQ implements IVerifyIQ {
   onWaive(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Waive, this.wrapWithActionWebhook(callback));
+    return this.renderer.on(EventsEnum.Waive, this.wrapWithActionWebhook(callback, EventsEnum.Waive));
   }
 
   /**
@@ -147,7 +163,7 @@ class VerifyIQ implements IVerifyIQ {
   onIncomplete(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Incomplete, this.wrapWithActionWebhook(callback));
+    return this.renderer.on(EventsEnum.Incomplete, this.wrapWithActionWebhook(callback, EventsEnum.Incomplete));
   }
 
   /**

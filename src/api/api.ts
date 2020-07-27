@@ -129,7 +129,7 @@ class API implements IApi {
     }
 
     const apiAction: APICallParams = {
-      url: '/',
+      url: '/customer_portal/application_status_action',
       method: 'POST',
       body: JSON.stringify({
         url: this._actionWebhookUrl!,

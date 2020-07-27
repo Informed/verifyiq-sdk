@@ -1,9 +1,9 @@
 export enum EventsEnum {
-  Loaded = 'loaded',
-  Pass = 'pass',
-  Incomplete = 'incomplete',
-  Waive = 'waive',
+  Loaded = 'Loaded',
+  Pass = 'Pass',
+  Incomplete = 'Incomplete',
+  Waive = 'Waive',
 
-  DocumentRequestedViaSMS = 'documentRequestedViaSMS',
-  PartnerLoaded = 'partnerLoaded'
+  DocumentRequestedViaSMS = 'DocumentRequestedViaSMS',
+  PartnerLoaded = 'PartnerLoaded'
 }
