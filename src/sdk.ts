@@ -133,7 +133,7 @@ class VerifyIQ implements IVerifyIQ {
   private onDocumentRequestedViaSms(callback?: DocumentRequestCallback) {
     if (!callback) return;
 
-    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, this.wrapWithActionWebhook(callback, EventsEnum.DocumentRequestedViaSMS));
+    this.renderer.on(EventsEnum.DocumentRequestedViaSMS, callback);
   }
 
   /**
