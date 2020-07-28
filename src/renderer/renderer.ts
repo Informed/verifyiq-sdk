@@ -16,7 +16,8 @@ export interface RendererOptions {
 
 export interface IRenderer {
   setRoot(dom: HTMLElement): void;
-  exec(command: string): void;
+  setUrl(url: string): void;
+  exec(message: IPCSerializable): void;
   on(event: EventsEnum, callback: EventCallback<any>): void;
   enableLogging(enabled: boolean): void;
   setAuth(authType: AuthTypes): void;
@@ -36,8 +37,11 @@ class Renderer implements IRenderer {
   /**
    * URL of the frame from where should be loaded
    */
-  private _url: string;
+  private _url?: string;
 
+  /**
+   * ApplicationID that needs to be loaded
+   */
   private _applicationId!: string;
   /**
    * Frame DOM element
@@ -48,10 +52,9 @@ class Renderer implements IRenderer {
    */
   private _logger: Logger;
 
-  constructor(options: RendererOptions) {
+  constructor() {
     this._eventsMap = new Map();
-    this._dom = options.element || null;
-    this._url = options.url;
+    this._dom = null;
     this._frame = null;
     this._logger = new Logger(false);
 
@@ -90,7 +93,12 @@ class Renderer implements IRenderer {
   public setAuth(authType: AuthTypes): void {
     const serializable = this._generateExecCommand('authType', authType);
 
-    this.exec(serializable.serialize());
+    this.exec(serializable);
+  }
+
+  public setUrl(url: string): void {
+    this._url = url;
+    this.invokeListeners(EventsEnum.PartnerLoaded);
   }
 
   /**
@@ -120,6 +128,19 @@ class Renderer implements IRenderer {
   }
 
   /**
+   * Invokes listeners of particular event listeners
+   * @param event {EventsEnum}
+   * @param params {unknown}
+   */
+  private invokeListeners(event: EventsEnum, ...params: unknown[]): void {
+    if (!this._eventsMap.has(event)) {
+      return;
+    }
+    const callbacks = this._eventsMap.get(event)!;
+    callbacks.forEach(cb => cb(...params));
+  }
+
+  /**
    * Handles events coming from the rendered frame
    * @param event {MessageEvent}
    */
@@ -138,13 +159,12 @@ class Renderer implements IRenderer {
     if (!this._eventsMap.has(messageAsEvent)) {
       return;
     }
-    this._eventsMap.get(messageAsEvent)?.forEach((callback) => {
-      const formattedPayload = isObject(payload)
-        ? Object.values(payload)
-        : [payload];
 
-      callback(...formattedPayload);
-    });
+    const formattedPayload = isObject(payload)
+      ? Object.values(payload)
+      : [payload];
+
+    this.invokeListeners(messageAsEvent, ...formattedPayload);
   }
 
   /**
@@ -166,7 +186,8 @@ class Renderer implements IRenderer {
    * Execute command inside frame
    * @param command {String}
    */
-  public exec(command: string): void {
+  public exec(ipcMessage: IPCSerializable): void {
+    const command = ipcMessage.serialize();
     if (!this._frame) {
       this._logger.warn(`
       frame is not initialized yet, but code is trying to execute
@@ -182,6 +203,15 @@ class Renderer implements IRenderer {
    * Render frame
    */
   public render(): void {
+    if (!this._url) {
+      this.on(EventsEnum.PartnerLoaded, () => this.render());
+      this._logger.warn(`
+        URL still not initialized,
+        frame will be loaded immediately when the URL will be set
+      `);
+      return;
+    }
+
     const element = this._inflateUI();
 
     if (!this._dom) {

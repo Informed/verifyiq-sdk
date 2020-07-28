@@ -1,20 +1,23 @@
 import { IVerifyIQ } from './types/SDK.interface';
 import { AuthTypes } from './types/auth-types.enum';
-import { Credentials } from './types/credentials.interface';
 import { VerificationActionPayload } from './types/verification-action.interface';
 import {
   EventCallback,
   DocumentRequestCallback,
 } from './types/callback.interface';
 import { EventsEnum } from './types/events.enum';
+import { IpcMessage } from './types/ipc.interface';
 import Renderer from './renderer/renderer';
 import Api from './api/api';
-import { Nullable } from './types/nullable';
+
 import { ApiEnvironment } from './constants/api.constants';
+import invariant from './utils/invariant';
+
 
 interface SDKOptions {
   url: string;
-  actionCallbackWebhookUrl: string;
+  authToken: string;
+  actionCallbackWebhookUrl?: string;
   environment: ApiEnvironment;
   onWaive?: EventCallback<any>;
   onPass?: EventCallback<any>;
@@ -24,6 +27,9 @@ interface SDKOptions {
 }
 
 class VerifyIQ implements IVerifyIQ {
+  public static Staging = ApiEnvironment.Staging;
+  public static Production = ApiEnvironment.Production;
+
   /**
    * Api instance
    */
@@ -34,32 +40,39 @@ class VerifyIQ implements IVerifyIQ {
    */
   private renderer: Renderer;
 
-  /**
-   * Auth credentials of the SDK
-   */
-  private credentials: Nullable<Credentials>;
-
   constructor(options: SDKOptions) {
-    this.renderer = new Renderer({
-      url: options.url,
+    invariant(!!options.environment, 'Environment is required');
+    invariant(!!options.authToken, 'authToken is required');
+
+    this.renderer = new Renderer();
+
+    if (options.url) {
+      this.renderer.setUrl(options.url);
+    }
+
+    this.api = new Api({
+      environment: options.environment,
+      authorization: options.authToken,
     });
-    this.api = new Api({ environment: options.environment });
-    this.credentials = null;
+
     this.onWaive(options.onWaive);
     this.onIncomplete(options.onIncomplete);
     this.onPass(options.onPass);
     this.onLoad(options.onLoad);
     this.onDocumentRequestedViaSms(options.onDocumentRequestedViaSms);
-  }
 
-  public static staging = ApiEnvironment.Staging;
-  public static production = ApiEnvironment.Production;
+    if (!options.url) {
+      this.initPartner();
+    }
+
+    this.registerAfterLoadActions(options.actionCallbackWebhookUrl);
+  }
 
   /**
    * Enable/Disable logging
    * @param isEnabled {Boolean}
    */
-  enableLogging(isEnabled: boolean) {
+  public enableLogging(isEnabled: boolean) {
     this.renderer.enableLogging(isEnabled);
     return this;
   }
@@ -68,19 +81,32 @@ class VerifyIQ implements IVerifyIQ {
    * Defines SAML Login type
    * @param authType {AuthTypes}
    */
-  setAuth(authType: AuthTypes) {
+  public setAuth(authType: AuthTypes) {
     this.renderer.setAuth(authType);
     return this;
   }
 
   /**
-   * Define credentials for SDK
-   * Should be defined before render
-   * @param credentials {Credentials}
+   * Transfers data to the frame when it's loaded
+   * @param actionWebhookUrl {String}
    */
-  setCredentials(credentials: Credentials) {
-    this.credentials = credentials;
-    return this;
+  private registerAfterLoadActions(actionWebhookUrl?: string) {
+    if (!actionWebhookUrl) { return; }
+
+    this.onLoad(() => {
+      const command = new IpcMessage(EventsEnum.ActionWebhookUrlInitialize, actionWebhookUrl);
+      this.renderer.exec(command);
+    });
+  }
+
+  /**
+   * Fetch partner url
+   */
+  private initPartner(): void {
+    this.api.getPartner()
+      .then((partner) => {
+        this.renderer.setUrl(partner.url);
+      });
   }
 
   /**
@@ -107,7 +133,7 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onPass(callback?: EventCallback<VerificationActionPayload>) {
+  private onPass(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
     return this.renderer.on(EventsEnum.Pass, callback);
@@ -117,7 +143,7 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onWaive(callback?: EventCallback<VerificationActionPayload>) {
+  private onWaive(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
     return this.renderer.on(EventsEnum.Waive, callback);
@@ -127,7 +153,7 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onIncomplete(callback?: EventCallback<VerificationActionPayload>) {
+  private onIncomplete(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
     return this.renderer.on(EventsEnum.Incomplete, callback);

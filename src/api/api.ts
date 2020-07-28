@@ -2,15 +2,16 @@ import { ApiEnvironment } from '../constants/api.constants';
 import type {
   ApiInfo,
   ApiEnvironment as ApiEnvironmentType,
-} from '../types/api-info';
+  IApi,
+  PartnerResponse,
+} from '../types/api.interface';
 
 const ORIGIN = 'driveinformed.com';
 
 type APICallParams = {
   url?: string;
-  method: string;
+  method: 'GET' | 'POST' | 'PUT';
   body?: string;
-  fullUrl?: string;
   headers?: {
     [key: string]: string;
   };
@@ -27,16 +28,11 @@ const mapEnvToSubdomain: MapEnvSubdomainType = {
 /**
  * @description API class
  */
-class API {
+class API implements IApi {
   /**
    * Final Endpoint
    */
   _endpoint!: string;
-
-  /**
-   * Supported API version
-   */
-  _apiV!: string;
 
   /**
    * Authorization for Informed API
@@ -53,18 +49,16 @@ class API {
   }
 
   private _constructWithOrigin(apiInfo: ApiInfo) {
-    this._apiV = '/api';
-    this._endpoint = `${apiInfo.host}${this._apiV}`;
+    this._endpoint = `${apiInfo.host}/api`;
     this._authorization = apiInfo.authorization || '';
   }
 
   private _constructWithEnvironment(apiInfo: ApiInfo) {
-    const { version, environment, authorization } = apiInfo;
+    const { environment, authorization } = apiInfo;
     const subdomain =
       mapEnvToSubdomain[environment as ApiEnvironmentType] || environment;
 
-    this._apiV = `/api/v${version}`;
-    this._endpoint = `https://${subdomain}.${ORIGIN}${this._apiV}`;
+    this._endpoint = `https://${subdomain}.${ORIGIN}/api`;
     this._authorization = authorization || '';
   }
 
@@ -72,7 +66,7 @@ class API {
    * @description Getter for host
    * @returns {string}
    */
-  get host() {
+  get host(): string {
     return this._endpoint;
   }
 
@@ -80,7 +74,7 @@ class API {
    * @description Getter for authorization
    * @returns {string}
    */
-  get authorization() {
+  get authorization(): string {
     return this._authorization;
   }
 
@@ -97,10 +91,8 @@ class API {
   private _makeApiCall = ({
     url = '',
     headers,
-    // eslint-disable-next-line no-unused-vars
-    fullUrl,
     ...params
-  }: APICallParams) => {
+  }: APICallParams): Promise<Response> => {
     const _headers = new Headers({
       ...headers,
     });
@@ -117,19 +109,21 @@ class API {
     });
   };
 
-  // @TODO(mihran):: provide valid url
-  actionCallbackWebhook = (payload: any) => {
-    const apiAction = {
-      url: '/',
-      method: 'POST',
-      body: JSON.stringify(payload),
+  getPartner(): Promise<PartnerResponse> {
+    const apiAction: APICallParams = {
+      url: '/verifyiq_url',
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'
+      }
     };
 
-    return this._makeApiCall(apiAction);
-  };
+    return this._makeApiCall(apiAction)
+      .then((response) => {
+        if (!response.ok) { throw response; }
+        return response.json();
+      });
+  }
 }
 
 export default API;

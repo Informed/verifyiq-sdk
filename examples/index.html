@@ -30,11 +30,11 @@
     <script src="../dist/index.js"></script>
     <script>
       const viq = new VerifyIQ({
-        url: "https://5d34c2869561.ngrok.io",
-
-        actionCallbackWebhookUrl: "actionCallbackWebhookUrl",
+        authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTphcGFzc3cwcmQ=',
+        actionCallbackWebhookUrl: "http://localhost:3001/webhook",
 
         environment: VerifyIQ.Staging,
+        version: 6,
 
         onPass: function (actionObject, reason) {
           /* Stipulation action handler */
