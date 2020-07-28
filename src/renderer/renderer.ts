@@ -17,7 +17,7 @@ export interface RendererOptions {
 export interface IRenderer {
   setRoot(dom: HTMLElement): void;
   setUrl(url: string): void;
-  exec(command: string): void;
+  exec(message: IPCSerializable): void;
   on(event: EventsEnum, callback: EventCallback<any>): void;
   enableLogging(enabled: boolean): void;
   setAuth(authType: AuthTypes): void;
@@ -93,7 +93,7 @@ class Renderer implements IRenderer {
   public setAuth(authType: AuthTypes): void {
     const serializable = this._generateExecCommand('authType', authType);
 
-    this.exec(serializable.serialize());
+    this.exec(serializable);
   }
 
   public setUrl(url: string): void {
@@ -186,7 +186,8 @@ class Renderer implements IRenderer {
    * Execute command inside frame
    * @param command {String}
    */
-  public exec(command: string): void {
+  public exec(ipcMessage: IPCSerializable): void {
+    const command = ipcMessage.serialize();
     if (!this._frame) {
       this._logger.warn(`
       frame is not initialized yet, but code is trying to execute

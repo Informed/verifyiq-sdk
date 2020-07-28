@@ -95,7 +95,7 @@ class VerifyIQ implements IVerifyIQ {
 
     this.onLoad(() => {
       const command = new IpcMessage(EventsEnum.ActionWebhookUrlInitialize, actionWebhookUrl);
-      this.renderer.exec(command.serialize());
+      this.renderer.exec(command);
     });
   }
 
