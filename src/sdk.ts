@@ -6,8 +6,10 @@ import {
   DocumentRequestCallback,
 } from './types/callback.interface';
 import { EventsEnum } from './types/events.enum';
+import { IpcMessage } from './types/ipc.interface';
 import Renderer from './renderer/renderer';
 import Api from './api/api';
+
 import { ApiEnvironment } from './constants/api.constants';
 import invariant from './utils/invariant';
 
@@ -25,6 +27,9 @@ interface SDKOptions {
 }
 
 class VerifyIQ implements IVerifyIQ {
+  public static Staging = ApiEnvironment.Staging;
+  public static Production = ApiEnvironment.Production;
+
   /**
    * Api instance
    */
@@ -56,23 +61,18 @@ class VerifyIQ implements IVerifyIQ {
     this.onLoad(options.onLoad);
     this.onDocumentRequestedViaSms(options.onDocumentRequestedViaSms);
 
-    if (options.actionCallbackWebhookUrl) {
-      this.api.setActionWebhookUrl(options.actionCallbackWebhookUrl);
-    }
-
     if (!options.url) {
       this.initPartner();
     }
-  }
 
-  public static Staging = ApiEnvironment.Staging;
-  public static Production = ApiEnvironment.Production;
+    this.registerAfterLoadActions(options.actionCallbackWebhookUrl);
+  }
 
   /**
    * Enable/Disable logging
    * @param isEnabled {Boolean}
    */
-  enableLogging(isEnabled: boolean) {
+  public enableLogging(isEnabled: boolean) {
     this.renderer.enableLogging(isEnabled);
     return this;
   }
@@ -81,39 +81,32 @@ class VerifyIQ implements IVerifyIQ {
    * Defines SAML Login type
    * @param authType {AuthTypes}
    */
-  setAuth(authType: AuthTypes) {
+  public setAuth(authType: AuthTypes) {
     this.renderer.setAuth(authType);
     return this;
   }
 
+  /**
+   * Transfers data to the frame when it's loaded
+   * @param actionWebhookUrl {String}
+   */
+  private registerAfterLoadActions(actionWebhookUrl?: string) {
+    if (!actionWebhookUrl) { return; }
+
+    this.onLoad(() => {
+      const command = new IpcMessage(EventsEnum.ActionWebhookUrlInitialize, actionWebhookUrl);
+      this.renderer.exec(command.serialize());
+    });
+  }
+
+  /**
+   * Fetch partner url
+   */
   private initPartner(): void {
     this.api.getPartner()
       .then((partner) => {
         this.renderer.setUrl(partner.url);
       });
-  }
-
-  /**
-   * Wraps callback function with another function
-   * Which sends request to actionWebhookUrl before
-   * executing callback function
-   * @param fn {Function} - Callback function
-   */
-  private wrapWithActionWebhook<T>(fn: EventCallback<T>, event: EventsEnum): EventCallback<T> {
-    return (...args) => {
-      const payload: { [key: string]: unknown } = {
-        ...args[0],
-        status: event,
-      };
-
-      if (event === EventsEnum.Incomplete) {
-        // @ts-ignore
-        payload.comment = args[1];
-      }
-
-      this.api.syncActionWebhook(payload);
-      return fn(...args);
-    };
   }
 
   /**
@@ -140,30 +133,30 @@ class VerifyIQ implements IVerifyIQ {
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onPass(callback?: EventCallback<VerificationActionPayload>) {
+  private onPass(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Pass, this.wrapWithActionWebhook(callback, EventsEnum.Pass));
+    return this.renderer.on(EventsEnum.Pass, callback);
   }
 
   /**
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onWaive(callback?: EventCallback<VerificationActionPayload>) {
+  private onWaive(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Waive, this.wrapWithActionWebhook(callback, EventsEnum.Waive));
+    return this.renderer.on(EventsEnum.Waive, callback);
   }
 
   /**
    * Register callback for verification specific event
    * @param callback {VerificationActionCallback}
    */
-  onIncomplete(callback?: EventCallback<VerificationActionPayload>) {
+  private onIncomplete(callback?: EventCallback<VerificationActionPayload>) {
     if (!callback) return;
 
-    return this.renderer.on(EventsEnum.Incomplete, this.wrapWithActionWebhook(callback, EventsEnum.Incomplete));
+    return this.renderer.on(EventsEnum.Incomplete, callback);
   }
 
   /**

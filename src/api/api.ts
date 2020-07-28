@@ -39,11 +39,6 @@ class API implements IApi {
    */
   _authorization!: string;
 
-  /**
-   * Registered Action webhook url
-   */
-  _actionWebhookUrl?: string;
-
   constructor(apiInfo: ApiInfo) {
     if (apiInfo.host) {
       this._constructWithOrigin(apiInfo);
@@ -112,35 +107,6 @@ class API implements IApi {
       ...params,
       headers: _headers,
     });
-  };
-
-  /**
-   * Register actionWebhookUrl
-   * @param webhookUrl {String}
-   */
-  setActionWebhookUrl(webhookUrl: string): void {
-    this._actionWebhookUrl = webhookUrl;
-  }
-
-  // @TODO(mihran):: provide valid url
-  syncActionWebhook = (payload: unknown) => {
-    if (!this._actionWebhookUrl) {
-      return Promise.resolve(null);
-    }
-
-    const apiAction: APICallParams = {
-      url: '/customer_portal/application_status_action',
-      method: 'POST',
-      body: JSON.stringify({
-        url: this._actionWebhookUrl!,
-        payload
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    return this._makeApiCall(apiAction);
   };
 
   getPartner(): Promise<PartnerResponse> {

@@ -3,7 +3,8 @@ export enum EventsEnum {
   Pass = 'Pass',
   Incomplete = 'Incomplete',
   Waive = 'Waive',
-
   DocumentRequestedViaSMS = 'DocumentRequestedViaSMS',
-  PartnerLoaded = 'PartnerLoaded'
+
+  PartnerLoaded = 'PartnerLoaded',
+  ActionWebhookUrlInitialize = 'ActionWebhookUrlInit',
 }

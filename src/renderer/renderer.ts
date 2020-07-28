@@ -39,6 +39,9 @@ class Renderer implements IRenderer {
    */
   private _url?: string;
 
+  /**
+   * ApplicationID that needs to be loaded
+   */
   private _applicationId!: string;
   /**
    * Frame DOM element

@@ -12,8 +12,5 @@ export interface PartnerResponse {
 
 
 export interface IApi {
-  setActionWebhookUrl(webhookUrl: string): void;
-  syncActionWebhook(payload: unknown): Promise<unknown>;
-
   getPartner(): Promise<PartnerResponse>;
 }
