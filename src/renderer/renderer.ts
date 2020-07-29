@@ -128,6 +128,7 @@ class Renderer implements IRenderer {
     frame.onload = () => {
       this._frame = frame.contentWindow!;
       this._queue.forEach((message) => this.exec(message));
+      this._queue = [];
     };
 
     return frame;
