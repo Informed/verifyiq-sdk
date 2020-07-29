@@ -23,6 +23,7 @@ type MapEnvSubdomainType = {
 
 const mapEnvToSubdomain: MapEnvSubdomainType = {
   [ApiEnvironment.Production]: 'api',
+  [ApiEnvironment.Staging]: 'api-staging'
 };
 
 /**
