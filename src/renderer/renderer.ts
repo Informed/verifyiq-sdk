@@ -52,6 +52,11 @@ class Renderer implements IRenderer {
    */
   private _logger: Logger;
 
+  /**
+   * Unexecuted commands
+   */
+  private _queue: IPCSerializable[] = [];
+
   constructor() {
     this._eventsMap = new Map();
     this._dom = null;
@@ -122,6 +127,7 @@ class Renderer implements IRenderer {
     frame.src = `${this._url}/applications/${this._applicationId}`;
     frame.onload = () => {
       this._frame = frame.contentWindow!;
+      this._queue.forEach((message) => this.exec(message));
     };
 
     return frame;
@@ -192,7 +198,9 @@ class Renderer implements IRenderer {
       this._logger.warn(`
       frame is not initialized yet, but code is trying to execute
       a command: ${command}
+      Message will be queued
       `);
+      this._queue.push(ipcMessage);
       return;
     }
     this._logger.log(command);
