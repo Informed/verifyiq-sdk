@@ -29,7 +29,7 @@
     <div id="root"></div>
     <script src="../dist/index.js"></script>
     <script>
-      const viq = new VerifyIQ({
+      var viq = new VerifyIQ({
         authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTphcGFzc3cwcmQ=',
         actionCallbackWebhookUrl: "https://989cdf16d5cee870419df8e5fb475a70.m.pipedream.net",
 
@@ -41,7 +41,7 @@
           console.log("Pass", actionObject, reason);
         },
 
-        onDocumentRequestedViaSms: (stipObjects) => {
+        onDocumentRequestedViaSms: function (stipObjects) {
           console.log("onRequestDocumentsViaSms", stipObjects);
         },
 
@@ -67,14 +67,14 @@
       const samlPopupBtn = document.querySelector("#auth-popup");
       const samlWindowBtn = document.querySelector("#auth-window");
 
-      samlPopupBtn.addEventListener("click", () => {
+      samlPopupBtn.addEventListener("click", function() {
         viq.setAuth(VerifyIQ.auth.Popup);
       });
-      samlWindowBtn.addEventListener("click", () => {
+      samlWindowBtn.addEventListener("click", function() {
         viq.setAuth(VerifyIQ.auth.Tab);
       });
 
-      renderBtn.addEventListener("click", () => {
+      renderBtn.addEventListener("click", function() {
         const applicationId = "retired_only_ssi_award_letter_1";
 
         viq.renderApplicationId(document.getElementById("root"), applicationId);
