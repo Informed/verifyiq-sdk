@@ -63,6 +63,7 @@
     <script>
       var applicationNode = document.getElementById('applicationId');
       var authActionsContainer = document.getElementById('auth-actions');
+      var root = document.getElementById('root');
 
       authActionsContainer.style.display = 'none';
 
@@ -104,6 +105,11 @@
       var samlPopupBtn = document.querySelector("#auth-popup");
       var samlWindowBtn = document.querySelector("#auth-window");
 
+      applicationNode.onkeyup = function(e) {
+        if (e.which === 13) {
+          render();
+        }
+      }
       samlPopupBtn.addEventListener("click", () => {
         viq.setAuth(VerifyIQ.auth.Popup);
       });
@@ -112,7 +118,7 @@
         viq.setAuth(VerifyIQ.auth.Tab);
       });
 
-      renderBtn.addEventListener("click", () => {
+      function render() {
         var applicationId = applicationNode.value;
 
         if (applicationId.trim() === '') {
@@ -121,9 +127,13 @@
 
         console.log('Loading application', applicationId);
 
-        applicationNode.style.display = 'none';
-        renderBtn.style.display = 'none';
-        viq.renderApplicationId(document.getElementById("root"), applicationId);
+        root.innerHTML = '';
+
+        viq.renderApplicationId(root, applicationId);
+      }
+
+      renderBtn.addEventListener("click", () => {
+        render();
       });
     </script>
   </body>
