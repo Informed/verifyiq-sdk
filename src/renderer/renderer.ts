@@ -124,7 +124,7 @@ class Renderer implements IRenderer {
     frame.style.width = '100%';
     frame.style.height = '100%';
     frame.id = INJECTED_UI_ID;
-    frame.src = `${this._url}/applications/${this._applicationId}`;
+    frame.src = `${this._url}/applications/${this._applicationId}?sdk=true`;
     frame.onload = () => {
       this._frame = frame.contentWindow!;
       this._queue.forEach((message) => this.exec(message));
