@@ -15,6 +15,7 @@
         padding: 5px;
         border: 0.1px solid black;
         border-radius: 5px;
+        min-width: 170px;
       }
       button {
         background: white;
@@ -50,12 +51,12 @@
   </head>
   <body>
     <div id="buttons">
-      <button id="render">View Verification</button>
+      <button id="render">View Verifications</button>
       <div id="auth-actions">
         <button id="auth-popup">SAML in Popup</button>
         <button id="auth-window">SAML in Separate Tab</button>
       </div>
-      <input id="applicationId" placeholder="Past applicationId here..." />
+      <input id="applicationId" placeholder="Enter Application ID here..." />
     </div>
 
     <div id="root"></div>
@@ -68,7 +69,7 @@
       authActionsContainer.style.display = 'none';
 
       var viq = new VerifyIQ({
-        authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTphcGFzc3cwcmQ=',
+        authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
         actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
 
         environment: VerifyIQ.Staging,
