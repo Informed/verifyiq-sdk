@@ -13,11 +13,10 @@ import Api from './api/api';
 import { ApiEnvironment } from './constants/api.constants';
 import invariant from './utils/invariant';
 
-
 interface SDKOptions {
   url: string;
   authToken: string;
-  authType: AuthTypes,
+  authType?: AuthTypes;
   actionCallbackWebhookUrl?: string;
   environment: ApiEnvironment;
   onWaive?: EventCallback<any>;
@@ -44,13 +43,16 @@ class VerifyIQ implements IVerifyIQ {
   constructor(options: SDKOptions) {
     invariant(!!options.environment, 'Environment is required');
     invariant(!!options.authToken, 'authToken is required');
-    invariant(!!options.authType, 'authType is required');
 
     this.renderer = new Renderer();
 
     if (options.url) {
       this.renderer.setUrl(options.url);
     }
+    const { authType } = options;
+    authType ? this.setAuth(authType) : this.setAuth(AuthTypes.Popup);
+
+
 
     this.api = new Api({
       environment: options.environment,
@@ -68,9 +70,6 @@ class VerifyIQ implements IVerifyIQ {
     }
 
     this.registerAfterLoadActions(options.actionCallbackWebhookUrl);
-    this.onLoad(() => {
-      this.setAuth(options.authType);
-    });
   }
 
   /**
@@ -83,23 +82,19 @@ class VerifyIQ implements IVerifyIQ {
   }
 
   /**
-   * Defines SAML Login type
-   * @param authType {AuthTypes}
-   */
-  public setAuth(authType: AuthTypes) {
-    this.renderer.setAuth(authType);
-    return this;
-  }
-
-  /**
    * Transfers data to the frame when it's loaded
    * @param actionWebhookUrl {String}
    */
   private registerAfterLoadActions(actionWebhookUrl?: string) {
-    if (!actionWebhookUrl) { return; }
+    if (!actionWebhookUrl) {
+      return;
+    }
 
     this.onLoad(() => {
-      const command = new IpcMessage(EventsEnum.ActionWebhookUrlInitialize, actionWebhookUrl);
+      const command = new IpcMessage(
+        EventsEnum.ActionWebhookUrlInitialize,
+        actionWebhookUrl
+      );
       this.renderer.exec(command);
     });
   }
@@ -108,11 +103,20 @@ class VerifyIQ implements IVerifyIQ {
    * Fetch partner url
    */
   private initPartner(): void {
-    this.api.getPartner()
-      .then((partner) => {
-        this.renderer.setUrl(partner.url);
-      });
+    this.api.getPartner().then((partner) => {
+      this.renderer.setUrl(partner.url);
+    });
   }
+
+  /**
+   * Defines SAML Login type
+   * @param authType {AuthTypes}
+   */
+  private setAuth(authType: AuthTypes) {
+    this.renderer.setAuth(authType);
+    return this;
+  }
+
 
   /**
    * Register callback for iframe onLoad event

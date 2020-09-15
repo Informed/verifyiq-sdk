@@ -1,143 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
-      }
-      input {
-        height: 25px;
-        padding: 5px;
-        border: 0.1px solid black;
-        border-radius: 5px;
-        min-width: 170px;
-      }
-      button {
-        background: darkgrey;
-        border: 0.1px solid black;
-        border-radius: 5px;
-        padding: 10px 10px;
-        cursor: pointer;
-        transition: 200ms;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
+    input {
+      height: 25px;
+      padding: 5px;
+      border: 0.1px solid black;
+      border-radius: 5px;
+      min-width: 170px;
+    }
+    button {
+      background: darkgrey;
+      border: 0.1px solid black;
+      border-radius: 5px;
+      padding: 10px 10px;
+      cursor: pointer;
+      transition: 200ms;
+    }
 
-      button:hover {
-        background-color: rgb(217, 217, 217);
-      }
-      #root {
-        width: 100vw;
-        height: 100vh;
-        padding-top: 60px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        min-width: 1405px;
-        min-height: 850px;
-        max-height: 850px;
-      }
-      #buttons {
-        position: absolute;
-        top: 0;
-        margin: 10px 10px 0 50px;
-      }
-      #auth-actions {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="buttons">
-      <button id="render">View Verifications</button>
-      <div id="auth-actions">
-        <button id="auth-popup">SAML in Popup</button>
-        <button id="auth-window">SAML in Separate Tab</button>
-      </div>
-      <input id="applicationId" placeholder="Enter Application ID here..." />
-    </div>
+    button:hover {
+      background-color: rgb(217, 217, 217);
+    }
+    #root {
+      width: 100vw;
+      height: 100vh;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      min-width: 1405px;
+      min-height: 850px;
+      max-height: 850px;
+    }
+    #buttons {
+      position: absolute;
+      top: 0;
+      margin: 10px 10px 0 50px;
+    }
+    #auth-actions {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div id="buttons">
+  <button id="render">View Verifications</button>
+  <input id="applicationId" placeholder="Enter Application ID here..." />
+</div>
 
-    <div id="root"></div>
-    <script src="../dist/index.js"></script>
-    <script>
-      var applicationNode = document.getElementById('applicationId');
-      var authActionsContainer = document.getElementById('auth-actions');
-      var root = document.getElementById('root');
+<div id="root"></div>
+<script src="../dist/index.js"></script>
+<script>
+  var applicationNode = document.getElementById('applicationId');
+  var root = document.getElementById('root');
 
-      authActionsContainer.style.display = 'none';
+  var viq = new VerifyIQ({
+    authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
+    actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
+    environment: VerifyIQ.Staging,
 
-      var viq = new VerifyIQ({
-        authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
-        actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
+    onPass: function (actionObject, reason) {
+      /* Stipulation action handler */
+      console.log("Pass", actionObject, reason);
+    },
 
-        environment: VerifyIQ.Staging,
-        authType: VerifyIQ.auth.Popup,
+    onDocumentRequestedViaSms: (stipObjects) => {
+      console.log("onRequestDocumentsViaSms", stipObjects);
+    },
 
-        onPass: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Pass", actionObject, reason);
-        },
+    onIncomplete: function (actionObject, reason) {
+      /* Stipulation action handler */
+      console.log("Incomplete", actionObject, reason);
+    },
 
-        onDocumentRequestedViaSms: (stipObjects) => {
-          console.log("onRequestDocumentsViaSms", stipObjects);
-        },
+    onWaive: function (actionObject, reason) {
+      /* Stipulation action handler */
+      console.log("Waive", actionObject, reason);
+    },
 
-        onIncomplete: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Incomplete", actionObject, reason);
-        },
+    onLoad: function (payload) {
+      /* Iframe onLoad event handler */
+      console.log("Frame is loaded", payload);
+    },
+  });
 
-        onWaive: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Waive", actionObject, reason);
-        },
+  viq.enableLogging(true);
 
-        onLoad: function (payload) {
-          /* Iframe onLoad event handler */
-          console.log("Frame is loaded", payload);
-        },
-      });
+  var renderBtn = document.querySelector("#render");
 
-      viq.enableLogging(true);
+  applicationNode.onkeyup = function(e) {
+    if (e.which === 13) {
+      render();
+    }
+  }
 
-      var renderBtn = document.querySelector("#render");
-      var samlPopupBtn = document.querySelector("#auth-popup");
-      var samlWindowBtn = document.querySelector("#auth-window");
 
-      applicationNode.onkeyup = function(e) {
-        if (e.which === 13) {
-          render();
-        }
-      }
-      samlPopupBtn.addEventListener("click", () => {
-        viq.setAuth(VerifyIQ.auth.Popup);
-      });
+  function render() {
+    var applicationId = applicationNode.value;
 
-      samlWindowBtn.addEventListener("click", () => {
-        viq.setAuth(VerifyIQ.auth.Tab);
-      });
+    if (applicationId.trim() === '') {
+      return;
+    }
 
-      function render() {
-        var applicationId = applicationNode.value;
+    console.log('Loading application', applicationId);
 
-        if (applicationId.trim() === '') {
-          return;
-        }
+    root.innerHTML = '';
 
-        console.log('Loading application', applicationId);
+    viq.renderApplicationId(root, applicationId);
+  }
 
-        root.innerHTML = '';
-
-        viq.renderApplicationId(root, applicationId);
-      }
-
-      renderBtn.addEventListener("click", () => {
-        render();
-      });
-    </script>
-  </body>
+  renderBtn.addEventListener("click", () => {
+    render();
+  });
+</script>
+</body>
 </html>
