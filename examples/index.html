@@ -68,18 +68,13 @@
   <script src="../dist/index.js"></script>
   <script>
     var applicationNode = document.getElementById("applicationId");
-    var authActionsContainer = document.getElementById("auth-actions");
     var root = document.getElementById("root");
-
-    authActionsContainer.style.display = "none";
 
     var viq = new VerifyIQ({
       authToken:
         "Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=",
       actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
-
       environment: VerifyIQ.Staging,
-      authType: VerifyIQ.auth.Popup,
 
       onPass: function (actionObject, reason) {
         /* Stipulation action handler */
@@ -109,8 +104,6 @@
     viq.enableLogging(true);
 
     var renderBtn = document.querySelector("#render");
-    var samlPopupBtn = document.querySelector("#auth-popup");
-    var samlWindowBtn = document.querySelector("#auth-window");
 
     applicationNode.onkeyup = function (e) {
       if (e.which === 13) {
