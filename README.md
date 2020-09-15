@@ -49,8 +49,6 @@ const viq = new VerifyIQ({
 <div id="verify-iq-root"></div>
 ```
 
-**3. Configure SAML Login Method**
-
 **4. Render VerifyIQ in the given DOM element**
 
 ```js
