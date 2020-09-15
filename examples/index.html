@@ -1,143 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
-      }
-      input {
-        height: 25px;
-        padding: 5px;
-        border: 0.1px solid black;
-        border-radius: 5px;
-        min-width: 170px;
-      }
-      button {
-        background: darkgrey;
-        border: 0.1px solid black;
-        border-radius: 5px;
-        padding: 10px 10px;
-        cursor: pointer;
-        transition: 200ms;
-      }
 
-      button:hover {
-        background-color: rgb(217, 217, 217);
-      }
-      #root {
-        width: 100vw;
-        height: 100vh;
-        padding-top: 60px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        min-width: 1405px;
-        min-height: 850px;
-        max-height: 850px;
-      }
-      #buttons {
-        position: absolute;
-        top: 0;
-        margin: 10px 10px 0 50px;
-      }
-      #auth-actions {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="buttons">
-      <button id="render">View Verifications</button>
-      <div id="auth-actions">
-        <button id="auth-popup">SAML in Popup</button>
-        <button id="auth-window">SAML in Separate Tab</button>
-      </div>
-      <input id="applicationId" placeholder="Enter Application ID here..." />
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
 
-    <div id="root"></div>
-    <script src="../dist/index.js"></script>
-    <script>
-      var applicationNode = document.getElementById('applicationId');
-      var authActionsContainer = document.getElementById('auth-actions');
-      var root = document.getElementById('root');
+    input {
+      height: 25px;
+      padding: 5px;
+      border: 0.1px solid black;
+      border-radius: 5px;
+      min-width: 170px;
+    }
 
-      authActionsContainer.style.display = 'none';
+    button {
+      background: darkgrey;
+      border: 0.1px solid black;
+      border-radius: 5px;
+      padding: 10px 10px;
+      cursor: pointer;
+      transition: 200ms;
+    }
 
-      var viq = new VerifyIQ({
-        authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
-        actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
+    button:hover {
+      background-color: rgb(217, 217, 217);
+    }
 
-        environment: VerifyIQ.Staging,
-        authType: VerifyIQ.auth.Popup,
+    #root {
+      width: 100vw;
+      height: 100vh;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      min-width: 1405px;
+      min-height: 850px;
+      max-height: 850px;
+    }
 
-        onPass: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Pass", actionObject, reason);
-        },
+    #buttons {
+      position: absolute;
+      top: 0;
+      margin: 10px 10px 0 50px;
+    }
 
-        onDocumentRequestedViaSms: (stipObjects) => {
-          console.log("onRequestDocumentsViaSms", stipObjects);
-        },
+    #auth-actions {
+      display: none;
+    }
+  </style>
+</head>
 
-        onIncomplete: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Incomplete", actionObject, reason);
-        },
+<body>
+  <div id="buttons">
+    <button id="render">View Verifications</button>
+    <input id="applicationId" placeholder="Enter Application ID here..." />
+  </div>
 
-        onWaive: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Waive", actionObject, reason);
-        },
+  <div id="root"></div>
+  <script src="../dist/index.js"></script>
+  <script>
+    var applicationNode = document.getElementById("applicationId");
+    var authActionsContainer = document.getElementById("auth-actions");
+    var root = document.getElementById("root");
 
-        onLoad: function (payload) {
-          /* Iframe onLoad event handler */
-          console.log("Frame is loaded", payload);
-        },
-      });
+    authActionsContainer.style.display = "none";
 
-      viq.enableLogging(true);
+    var viq = new VerifyIQ({
+      authToken:
+        "Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=",
+      actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
 
-      var renderBtn = document.querySelector("#render");
-      var samlPopupBtn = document.querySelector("#auth-popup");
-      var samlWindowBtn = document.querySelector("#auth-window");
+      environment: VerifyIQ.Staging,
+      authType: VerifyIQ.auth.Popup,
 
-      applicationNode.onkeyup = function(e) {
-        if (e.which === 13) {
-          render();
-        }
-      }
-      samlPopupBtn.addEventListener("click", () => {
-        viq.setAuth(VerifyIQ.auth.Popup);
-      });
+      onPass: function (actionObject, reason) {
+        /* Stipulation action handler */
+        console.log("Pass", actionObject, reason);
+      },
 
-      samlWindowBtn.addEventListener("click", () => {
-        viq.setAuth(VerifyIQ.auth.Tab);
-      });
+      onDocumentRequestedViaSms: (stipObjects) => {
+        console.log("onRequestDocumentsViaSms", stipObjects);
+      },
 
-      function render() {
-        var applicationId = applicationNode.value;
+      onIncomplete: function (actionObject, reason) {
+        /* Stipulation action handler */
+        console.log("Incomplete", actionObject, reason);
+      },
 
-        if (applicationId.trim() === '') {
-          return;
-        }
+      onWaive: function (actionObject, reason) {
+        /* Stipulation action handler */
+        console.log("Waive", actionObject, reason);
+      },
 
-        console.log('Loading application', applicationId);
+      onLoad: function (payload) {
+        /* Iframe onLoad event handler */
+        console.log("Frame is loaded", payload);
+      },
+    });
 
-        root.innerHTML = '';
+    viq.enableLogging(true);
 
-        viq.renderApplicationId(root, applicationId);
-      }
+    var renderBtn = document.querySelector("#render");
+    var samlPopupBtn = document.querySelector("#auth-popup");
+    var samlWindowBtn = document.querySelector("#auth-window");
 
-      renderBtn.addEventListener("click", () => {
+    applicationNode.onkeyup = function (e) {
+      if (e.which === 13) {
         render();
-      });
-    </script>
-  </body>
+      }
+    };
+
+    function render() {
+      var applicationId = applicationNode.value;
+
+      if (applicationId.trim() === "") {
+        return;
+      }
+
+      console.log("Loading application", applicationId);
+
+      root.innerHTML = "";
+
+      viq.renderApplicationId(root, applicationId);
+    }
+
+    renderBtn.addEventListener("click", () => {
+      render();
+    });
+  </script>
+</body>
+
 </html>

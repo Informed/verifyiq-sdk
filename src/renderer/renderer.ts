@@ -4,7 +4,6 @@ import { compact } from '../utils/compact';
 import { Nullable } from '../types/nullable';
 import { INJECTED_UI_ID } from '../constants';
 import Logger from '../utils/logger';
-import { AuthTypes } from '../types/auth-types.enum';
 import { IPCSerializable } from '../types/ipc.interface';
 import { IpcMessage } from '../types/ipc.interface';
 import { isObject } from '../utils/isObject';
@@ -20,7 +19,6 @@ export interface IRenderer {
   exec(message: IPCSerializable): void;
   on(event: EventsEnum, callback: EventCallback<any>): void;
   enableLogging(enabled: boolean): void;
-  setAuth(authType: AuthTypes): void;
   render(): void;
 }
 
@@ -91,16 +89,6 @@ class Renderer implements IRenderer {
     this._dom = dom;
   }
 
-  /**
-   * Defines SAML Login type
-   * @param authType {AuthTypes}
-   */
-  public setAuth(authType: AuthTypes): void {
-    const serializable = this._generateExecCommand('authType', authType);
-
-    this.exec(serializable);
-  }
-
   public setUrl(url: string): void {
     this._url = url;
     this.invokeListeners(EventsEnum.PartnerLoaded);
@@ -144,7 +132,7 @@ class Renderer implements IRenderer {
       return;
     }
     const callbacks = this._eventsMap.get(event)!;
-    callbacks.forEach(cb => cb(...params));
+    callbacks.forEach((cb) => cb(...params));
   }
 
   /**
