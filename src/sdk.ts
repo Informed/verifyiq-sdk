@@ -16,6 +16,7 @@ import invariant from './utils/invariant';
 interface SDKOptions {
   url: string;
   authToken: string;
+  authType?: AuthTypes;
   actionCallbackWebhookUrl?: string;
   environment: ApiEnvironment;
   onWaive?: EventCallback<any>;
@@ -42,15 +43,16 @@ class VerifyIQ implements IVerifyIQ {
   constructor(options: SDKOptions) {
     invariant(!!options.environment, 'Environment is required');
     invariant(!!options.authToken, 'authToken is required');
-    // invariant(!!options.authType, 'authType is required');
 
     this.renderer = new Renderer();
 
     if (options.url) {
       this.renderer.setUrl(options.url);
     }
+    const { authType } = options;
+    authType ? this.setAuth(authType) : this.setAuth(AuthTypes.Popup);
 
-    this.setAuth(AuthTypes.Popup);
+
 
     this.api = new Api({
       environment: options.environment,
