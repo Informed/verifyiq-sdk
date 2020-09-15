@@ -61,18 +61,21 @@
 <body>
   <div id="buttons">
     <button id="render">View Verifications</button>
+    <div id="auth-actions">
+      <button id="auth-popup">SAML in Popup</button>
+      <button id="auth-window">SAML in Separate Tab</button>
+    </div>
     <input id="applicationId" placeholder="Enter Application ID here..." />
   </div>
 
   <div id="root"></div>
   <script src="../dist/index.js"></script>
   <script>
-    var applicationNode = document.getElementById("applicationId");
-    var root = document.getElementById("root");
+    var applicationNode = document.getElementById('applicationId');
+    var root = document.getElementById('root');
 
     var viq = new VerifyIQ({
-      authToken:
-        "Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=",
+      authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
       actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
       environment: VerifyIQ.Staging,
 
@@ -109,18 +112,18 @@
       if (e.which === 13) {
         render();
       }
-    };
+    }
 
     function render() {
       var applicationId = applicationNode.value;
 
-      if (applicationId.trim() === "") {
+      if (applicationId.trim() === '') {
         return;
       }
 
-      console.log("Loading application", applicationId);
+      console.log('Loading application', applicationId);
 
-      root.innerHTML = "";
+      root.innerHTML = '';
 
       viq.renderApplicationId(root, applicationId);
     }
