@@ -1,6 +1,6 @@
 {
   "name": "@informed-iq/verify-iq-sdk",
-  "version": "1.6.1",
+  "version": "1.6.3",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -19,7 +19,7 @@
     "semantic-release": "semantic-release"
   },
   "author": "Shahen Hovhannisyan <shahen@simplytechnologies.net>",
-  "license": "ISC",
+  "license": "SEE LICENSE IN MASTER SERVICE AGREEMENT WITH INFORMED, INC.",
   "engines": {
     "node": "13.x"
   },
