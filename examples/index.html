@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +10,6 @@
       height: 100vh;
       margin: 0;
     }
-
     input {
       height: 25px;
       padding: 5px;
@@ -19,7 +17,6 @@
       border-radius: 5px;
       min-width: 170px;
     }
-
     button {
       background: darkgrey;
       border: 0.1px solid black;
@@ -32,7 +29,6 @@
     button:hover {
       background-color: rgb(217, 217, 217);
     }
-
     #root {
       width: 100vw;
       height: 100vh;
@@ -45,93 +41,86 @@
       min-height: 850px;
       max-height: 850px;
     }
-
     #buttons {
       position: absolute;
       top: 0;
       margin: 10px 10px 0 50px;
     }
-
     #auth-actions {
       display: none;
     }
   </style>
 </head>
-
 <body>
-  <div id="buttons">
-    <button id="render">View Verifications</button>
-    <div id="auth-actions">
-      <button id="auth-popup">SAML in Popup</button>
-      <button id="auth-window">SAML in Separate Tab</button>
-    </div>
-    <input id="applicationId" placeholder="Enter Application ID here..." />
-  </div>
+<div id="buttons">
+  <button id="render">View Verifications</button>
+  <input id="applicationId" placeholder="Enter Application ID here..." />
+</div>
 
-  <div id="root"></div>
-  <script src="../dist/index.js"></script>
-  <script>
-    var applicationNode = document.getElementById('applicationId');
-    var root = document.getElementById('root');
+<div id="root"></div>
+<script src="../dist/index.js"></script>
+<script>
+  var applicationNode = document.getElementById('applicationId');
+  var root = document.getElementById('root');
 
-    var viq = new VerifyIQ({
-      authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
-      actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
-      environment: VerifyIQ.Staging,
+  var viq = new VerifyIQ({
+    authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
+    actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
+    environment: VerifyIQ.Staging,
 
-      onPass: function (actionObject, reason) {
-        /* Stipulation action handler */
-        console.log("Pass", actionObject, reason);
-      },
+    onPass: function (actionObject, reason) {
+      /* Stipulation action handler */
+      console.log("Pass", actionObject, reason);
+    },
 
-      onDocumentRequestedViaSms: (stipObjects) => {
-        console.log("onRequestDocumentsViaSms", stipObjects);
-      },
+    onDocumentRequestedViaSms: (stipObjects) => {
+      console.log("onRequestDocumentsViaSms", stipObjects);
+    },
 
-      onIncomplete: function (actionObject, reason) {
-        /* Stipulation action handler */
-        console.log("Incomplete", actionObject, reason);
-      },
+    onIncomplete: function (actionObject, reason) {
+      /* Stipulation action handler */
+      console.log("Incomplete", actionObject, reason);
+    },
 
-      onWaive: function (actionObject, reason) {
-        /* Stipulation action handler */
-        console.log("Waive", actionObject, reason);
-      },
+    onWaive: function (actionObject, reason) {
+      /* Stipulation action handler */
+      console.log("Waive", actionObject, reason);
+    },
 
-      onLoad: function (payload) {
-        /* Iframe onLoad event handler */
-        console.log("Frame is loaded", payload);
-      },
-    });
+    onLoad: function (payload) {
+      /* Iframe onLoad event handler */
+      console.log("Frame is loaded", payload);
+    },
+  });
 
-    viq.enableLogging(true);
+  viq.enableLogging(true);
 
-    var renderBtn = document.querySelector("#render");
+  var renderBtn = document.querySelector("#render");
 
-    applicationNode.onkeyup = function (e) {
-      if (e.which === 13) {
-        render();
-      }
-    }
-
-    function render() {
-      var applicationId = applicationNode.value;
-
-      if (applicationId.trim() === '') {
-        return;
-      }
-
-      console.log('Loading application', applicationId);
-
-      root.innerHTML = '';
-
-      viq.renderApplicationId(root, applicationId);
-    }
-
-    renderBtn.addEventListener("click", () => {
+  applicationNode.onkeyup = function(e) {
+    if (e.which === 13) {
       render();
-    });
-  </script>
-</body>
+    }
+  }
 
+
+  function render() {
+    var applicationId = applicationNode.value;
+
+    if (applicationId.trim() === '') {
+      return;
+    }
+
+    console.log('Loading application', applicationId);
+
+    root.innerHTML = '';
+
+    viq.renderApplicationId(root, applicationId);
+  }
+
+  renderBtn.addEventListener("click", () => {
+    render();
+  });
+</script>
+</body>
 </html>

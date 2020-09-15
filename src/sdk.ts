@@ -1,4 +1,5 @@
 import { IVerifyIQ } from './types/SDK.interface';
+import { AuthTypes } from './types/auth-types.enum';
 import { VerificationActionPayload } from './types/verification-action.interface';
 import {
   EventCallback,
@@ -15,6 +16,7 @@ import invariant from './utils/invariant';
 interface SDKOptions {
   url: string;
   authToken: string;
+  authType: AuthTypes;
   actionCallbackWebhookUrl?: string;
   environment: ApiEnvironment;
   onWaive?: EventCallback<any>;
@@ -41,12 +43,15 @@ class VerifyIQ implements IVerifyIQ {
   constructor(options: SDKOptions) {
     invariant(!!options.environment, 'Environment is required');
     invariant(!!options.authToken, 'authToken is required');
+    invariant(!!options.authType, 'authType is required');
 
     this.renderer = new Renderer();
 
     if (options.url) {
       this.renderer.setUrl(options.url);
     }
+
+    this.setAuth(AuthTypes.Popup);
 
     this.api = new Api({
       environment: options.environment,
@@ -101,6 +106,16 @@ class VerifyIQ implements IVerifyIQ {
       this.renderer.setUrl(partner.url);
     });
   }
+
+  /**
+   * Defines SAML Login type
+   * @param authType {AuthTypes}
+   */
+  private setAuth(authType: AuthTypes) {
+    this.renderer.setAuth(authType);
+    return this;
+  }
+
 
   /**
    * Register callback for iframe onLoad event
