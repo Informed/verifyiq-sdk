@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <style>
+    html {
+      font-family: Arial, Helvetica, sans-serif;
+    }
     body {
       width: 100vw;
       height: 100vh;
@@ -17,7 +20,7 @@
       border-radius: 5px;
       min-width: 170px;
     }
-    button {
+    button, select {
       background: darkgrey;
       border: 0.1px solid black;
       border-radius: 5px;
@@ -25,7 +28,6 @@
       cursor: pointer;
       transition: 200ms;
     }
-
     button:hover {
       background-color: rgb(217, 217, 217);
     }
@@ -45,22 +47,39 @@
       position: absolute;
       top: 0;
       margin: 10px 10px 0 50px;
+      display: flex;
     }
     #auth-actions {
       display: none;
+    }
+    .mr-5 {
+      margin-right: 5px;
+    }
+    .full-width {
+      width: 100%;
     }
   </style>
 </head>
 <body>
 <div id="buttons">
-  <button id="render">View Verifications</button>
-  <input id="applicationId" placeholder="Enter Application ID here..." />
+  <div id="applicationIdWraper" class="mr-5">
+    <button id="render">View Verifications</button>
+    <input id="applicationId" placeholder="Enter Application ID here..." />
+  </div>
+  <div id="applicantTypeWrapper" class="mr-5">
+    <select id="applicantType" class="full-width"></select>
+  </div>
+  <div id="stipulationTypeWrapper">
+    <select id="stipulationType" class="full-width"></select>
+  </div>
 </div>
 
 <div id="root"></div>
 <script src="../dist/index.js"></script>
 <script>
   var applicationNode = document.getElementById('applicationId');
+  var applicantTypeNode = document.getElementById('applicantType');
+  var stipulationTypeNode = document.getElementById('stipulationType');
   var root = document.getElementById('root');
 
   var viq = new VerifyIQ({
@@ -95,23 +114,120 @@
 
   viq.enableLogging(true);
 
-  var renderBtn = document.querySelector("#render");
+  var applicantTypes = ["PrimaryApplicant", "CoApplicant"];
+  var stipulationTypes = [
+    "Income",
+    "ContractCancellationOption",
+    "Residence",
+    "PurchaseOrder",
+    "Identity",
+    "PaidAccount",
+    "Insurance",
+    "Trade",
+    "Title",
+    "MortgageCurrent",
+    "Registration",
+    "NonOfficerResolutionRequired",
+    "VehicleImages",
+    "BankruptcyDischarged",
+    "CreditApplication",
+    "NonBureauCredit",
+    "CreditApproval",
+    "TaxLienSatisfied",
+    "CreditScoreDisclosureException",
+    "ChildSupportPaidAndCurrent",
+    "RetailInstallmentSalesContract",
+    "Rent",
+    "CosignerNotice",
+    "ArticlesOfIncorporation",
+    "OdometerStatement",
+    "ExecutedCrossCollateralDefaultAgreement",
+    "ForeignLanguageAcknowledgement",
+    "ExecutedGuarantyAgreement",
+    "BookoutSheet",
+    "AppearanceProtection",
+    "GapWaiverContract",
+    "BookoutPdf",
+    "VehicleServiceContract",
+    "ContractAddendum",
+    "CreditLifeDisabilityContract",
+    "CpoCertificate",
+    "LienPerfection",
+    "DisclosureForm",
+    "PowerOfAttorney",
+    "DocFeeDisclosureForm",
+    "LeaseContract",
+    "EmergencyRoadsideAssist",
+    "PayoffRelease",
+    "EmergencyTravelAssist",
+    "AcknowledgementOfRewrittenContract",
+    "Etch",
+    "OrderForm",
+    "ExcessWearAndTear",
+    "SSN",
+    "FaxCoverSheet",
+    "Phone",
+    "GapDisclosureAddendum",
+    "AutomaticACHWithdrawal",
+    "HailDamageDocument",
+    "Miscellaneous",
+    "Invoice",
+    "CreditScoreDisclosureException",
+    "KeyReplacement",
+    "ElectronicConsent",
+    "LemonLaw",
+    "CancellationAgreement",
+    "MailedAaNotice",
+    "ReportOfSale",
+    "MaintenanceWorksheet",
+    "CreditReport",
+    "Ofac",
+    "GuaranteeOfTitle",
+    "PaintlessDentRepair",
+    "AgreementToContact",
+    "TheftProtection",
+    "NegativeEquityForm",
+    "TheftRecoverySystem",
+    "TitleApplication",
+    "TireWheel",
+    "VerificationOfEmployment",
+    "TotalLossProtectionAssurance",
+];
 
+  function renderOptions(node, options) {
+    options.forEach((optionValue) => {
+      var option = document.createElement("option");   
+      var t = document.createTextNode(optionValue); 
+
+      option.setAttribute("value", optionValue);
+      option.appendChild(t);
+      node.appendChild(option);
+    })
+  }
+
+  renderOptions(applicantTypeNode, applicantTypes);
+  renderOptions(stipulationTypeNode, stipulationTypes);
+
+  var renderBtn = document.querySelector("#render");
   applicationNode.onkeyup = function(e) {
     if (e.which === 13) {
       render();
     }
   }
 
-
   function render() {
     var applicationId = applicationNode.value;
+    var selectedApplicantType = applicantTypeNode.options[applicantTypeNode.selectedIndex].text;
+    var selectedStipulationType = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].text;
 
     if (applicationId.trim() === '') {
       return;
     }
 
-    console.log('Loading application', applicationId);
+    console.log('Loading application');
+    console.log("applicationId", applicationId)
+    console.log('Applicant type', selectedApplicantType);
+    console.log('Stipulation type', selectedStipulationType);
 
     root.innerHTML = '';
 
