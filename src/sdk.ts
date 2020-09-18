@@ -1,4 +1,4 @@
-import { IVerifyIQ, renderApplicationIdArgType } from './types/SDK.interface';
+import { IVerifyIQ, RenderByApplicationIdParams } from './types/SDK.interface';
 import { AuthTypes } from './types/auth-types.enum';
 import { VerificationActionPayload } from './types/verification-action.interface';
 import {
@@ -189,7 +189,7 @@ class VerifyIQ implements IVerifyIQ {
     applicationId,
     applicant = VerifyIQ.ApplicantTypes.PrimaryApplicant,
     stipulation = ''
-  }: renderApplicationIdArgType) {
+  }: RenderByApplicationIdParams) {
     this.renderer.applicationId = applicationId;
     this.renderer.applicant = applicant;
     this.renderer.stipulation = stipulation;

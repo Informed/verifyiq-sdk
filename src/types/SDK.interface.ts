@@ -1,5 +1,5 @@
 
-export type renderApplicationIdArgType = { 
+export type RenderByApplicationIdParams = { 
   htmlElement: HTMLElement,
   applicationId: string,
   applicant?: string,
@@ -13,5 +13,5 @@ export interface IVerifyIQ {
     applicationId,
     applicant,
     stipulation
-  }: renderApplicationIdArgType): void;
+  }: RenderByApplicationIdParams): void;
 }

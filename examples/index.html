@@ -77,12 +77,22 @@
 <div id="root"></div>
 <script src="../dist/index.js"></script>
 <script>
+  // polyfill for IE11
+  if (!Object.values) {
+    Object.values = function(obj) {
+      return Object.keys(obj).map(function(e) {
+        return obj[e];
+      });
+    };
+  }
+
   var applicationNode = document.getElementById('applicationId');
   var applicantTypeNode = document.getElementById('applicantType');
   var stipulationTypeNode = document.getElementById('stipulationType');
   var root = document.getElementById('root');
 
   var viq = new VerifyIQ({
+    url: "https://986b62d39c6a.ngrok.io",
     authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
     actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
     environment: VerifyIQ.Staging,
@@ -124,6 +134,10 @@
     }
   }
 
+  renderBtn.addEventListener("click", () => {
+    render();
+  });
+
   function renderOptions(node, options) {
     options.forEach((optionValue) => {
       var option = document.createElement("option");   
@@ -158,10 +172,6 @@
       stipulation 
     });
   }
-
-  renderBtn.addEventListener("click", () => {
-    render();
-  });
 </script>
 </body>
 </html>
