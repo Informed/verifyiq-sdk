@@ -1,4 +1,4 @@
-import { IVerifyIQ } from './types/SDK.interface';
+import { IVerifyIQ, RenderByApplicationIdParams } from './types/SDK.interface';
 import { AuthTypes } from './types/auth-types.enum';
 import { VerificationActionPayload } from './types/verification-action.interface';
 import {
@@ -9,8 +9,7 @@ import { EventsEnum } from './types/events.enum';
 import { IpcMessage } from './types/ipc.interface';
 import Renderer from './renderer/renderer';
 import Api from './api/api';
-
-import { ApiEnvironment } from './constants/api.constants';
+import { ApiEnvironment, ApplicantTypes, StipulationTypes } from './constants/api.constants';
 import invariant from './utils/invariant';
 
 interface SDKOptions {
@@ -29,6 +28,9 @@ interface SDKOptions {
 class VerifyIQ implements IVerifyIQ {
   public static Staging = ApiEnvironment.Staging;
   public static Production = ApiEnvironment.Production;
+  public static ApplicantTypes = ApplicantTypes;
+  public static StipulationTypes = StipulationTypes;
+
 
   /**
    * Api instance
@@ -182,8 +184,16 @@ class VerifyIQ implements IVerifyIQ {
    * @param htmlElement {HTMLElement}
    * @param applicationId {String}
    */
-  public renderApplicationId(htmlElement: HTMLElement, applicationId: string) {
+  public renderApplicationId({
+    htmlElement,
+    applicationId,
+    applicant = VerifyIQ.ApplicantTypes.PrimaryApplicant,
+    stipulation = ''
+  }: RenderByApplicationIdParams) {
     this.renderer.applicationId = applicationId;
+    this.renderer.applicant = applicant;
+    this.renderer.stipulation = stipulation;
+
     this.render(htmlElement);
   }
 }

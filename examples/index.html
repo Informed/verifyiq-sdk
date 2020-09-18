@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <style>
+    html {
+      font-family: Arial, Helvetica, sans-serif;
+    }
     body {
       width: 100vw;
       height: 100vh;
@@ -17,7 +20,7 @@
       border-radius: 5px;
       min-width: 170px;
     }
-    button {
+    button, select {
       background: darkgrey;
       border: 0.1px solid black;
       border-radius: 5px;
@@ -25,7 +28,6 @@
       cursor: pointer;
       transition: 200ms;
     }
-
     button:hover {
       background-color: rgb(217, 217, 217);
     }
@@ -45,25 +47,52 @@
       position: absolute;
       top: 0;
       margin: 10px 10px 0 50px;
+      display: flex;
     }
     #auth-actions {
       display: none;
+    }
+    .mr-5 {
+      margin-right: 5px;
+    }
+    .full-width {
+      width: 100%;
     }
   </style>
 </head>
 <body>
 <div id="buttons">
-  <button id="render">View Verifications</button>
-  <input id="applicationId" placeholder="Enter Application ID here..." />
+  <div id="applicationIdWraper" class="mr-5">
+    <button id="render">View Verifications</button>
+    <input id="applicationId" placeholder="Enter Application ID here..." />
+  </div>
+  <div id="applicantTypeWrapper" class="mr-5">
+    <select id="applicantType" class="full-width"></select>
+  </div>
+  <div id="stipulationTypeWrapper">
+    <select id="stipulationType" class="full-width"></select>
+  </div>
 </div>
 
 <div id="root"></div>
 <script src="../dist/index.js"></script>
 <script>
+  // polyfill for IE11
+  if (!Object.values) {
+    Object.values = function(obj) {
+      return Object.keys(obj).map(function(e) {
+        return obj[e];
+      });
+    };
+  }
+
   var applicationNode = document.getElementById('applicationId');
+  var applicantTypeNode = document.getElementById('applicantType');
+  var stipulationTypeNode = document.getElementById('stipulationType');
   var root = document.getElementById('root');
 
   var viq = new VerifyIQ({
+    url: "https://986b62d39c6a.ngrok.io",
     authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
     actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
     environment: VerifyIQ.Staging,
@@ -95,32 +124,54 @@
 
   viq.enableLogging(true);
 
-  var renderBtn = document.querySelector("#render");
+  renderOptions(applicantTypeNode, Object.values(VerifyIQ.ApplicantTypes));
+  renderOptions(stipulationTypeNode, Object.values(VerifyIQ.StipulationTypes));
 
+  var renderBtn = document.querySelector("#render");
   applicationNode.onkeyup = function(e) {
     if (e.which === 13) {
       render();
     }
   }
 
+  renderBtn.addEventListener("click", () => {
+    render();
+  });
+
+  function renderOptions(node, options) {
+    options.forEach((optionValue) => {
+      var option = document.createElement("option");   
+      var text = document.createTextNode(optionValue); 
+
+      option.setAttribute("value", optionValue);
+      option.appendChild(text);
+      node.appendChild(option);
+    })
+  }
 
   function render() {
     var applicationId = applicationNode.value;
+    var applicant = applicantTypeNode.options[applicantTypeNode.selectedIndex].text;
+    var stipulation = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].text;
 
     if (applicationId.trim() === '') {
       return;
     }
 
-    console.log('Loading application', applicationId);
+    console.log('Loading application');
+    console.log(`applicationId    --- ${applicationId}`)
+    console.log(`Applicant type   --- ${applicant}`);
+    console.log(`Stipulation type --- ${stipulation}`);
 
     root.innerHTML = '';
 
-    viq.renderApplicationId(root, applicationId);
+    viq.renderApplicationId({
+      htmlElement: root, 
+      applicationId,
+      applicant,
+      stipulation 
+    });
   }
-
-  renderBtn.addEventListener("click", () => {
-    render();
-  });
 </script>
 </body>
 </html>
