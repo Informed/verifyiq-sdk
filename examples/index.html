@@ -114,99 +114,8 @@
 
   viq.enableLogging(true);
 
-  var applicantTypes = ["PrimaryApplicant", "CoApplicant"];
-  var stipulationTypes = [
-    "Income",
-    "ContractCancellationOption",
-    "Residence",
-    "PurchaseOrder",
-    "Identity",
-    "PaidAccount",
-    "Insurance",
-    "Trade",
-    "Title",
-    "MortgageCurrent",
-    "Registration",
-    "NonOfficerResolutionRequired",
-    "VehicleImages",
-    "BankruptcyDischarged",
-    "CreditApplication",
-    "NonBureauCredit",
-    "CreditApproval",
-    "TaxLienSatisfied",
-    "CreditScoreDisclosureException",
-    "ChildSupportPaidAndCurrent",
-    "RetailInstallmentSalesContract",
-    "Rent",
-    "CosignerNotice",
-    "ArticlesOfIncorporation",
-    "OdometerStatement",
-    "ExecutedCrossCollateralDefaultAgreement",
-    "ForeignLanguageAcknowledgement",
-    "ExecutedGuarantyAgreement",
-    "BookoutSheet",
-    "AppearanceProtection",
-    "GapWaiverContract",
-    "BookoutPdf",
-    "VehicleServiceContract",
-    "ContractAddendum",
-    "CreditLifeDisabilityContract",
-    "CpoCertificate",
-    "LienPerfection",
-    "DisclosureForm",
-    "PowerOfAttorney",
-    "DocFeeDisclosureForm",
-    "LeaseContract",
-    "EmergencyRoadsideAssist",
-    "PayoffRelease",
-    "EmergencyTravelAssist",
-    "AcknowledgementOfRewrittenContract",
-    "Etch",
-    "OrderForm",
-    "ExcessWearAndTear",
-    "SSN",
-    "FaxCoverSheet",
-    "Phone",
-    "GapDisclosureAddendum",
-    "AutomaticACHWithdrawal",
-    "HailDamageDocument",
-    "Miscellaneous",
-    "Invoice",
-    "CreditScoreDisclosureException",
-    "KeyReplacement",
-    "ElectronicConsent",
-    "LemonLaw",
-    "CancellationAgreement",
-    "MailedAaNotice",
-    "ReportOfSale",
-    "MaintenanceWorksheet",
-    "CreditReport",
-    "Ofac",
-    "GuaranteeOfTitle",
-    "PaintlessDentRepair",
-    "AgreementToContact",
-    "TheftProtection",
-    "NegativeEquityForm",
-    "TheftRecoverySystem",
-    "TitleApplication",
-    "TireWheel",
-    "VerificationOfEmployment",
-    "TotalLossProtectionAssurance",
-];
-
-  function renderOptions(node, options) {
-    options.forEach((optionValue) => {
-      var option = document.createElement("option");   
-      var t = document.createTextNode(optionValue); 
-
-      option.setAttribute("value", optionValue);
-      option.appendChild(t);
-      node.appendChild(option);
-    })
-  }
-
-  renderOptions(applicantTypeNode, applicantTypes);
-  renderOptions(stipulationTypeNode, stipulationTypes);
+  renderOptions(applicantTypeNode, Object.values(VerifyIQ.ApplicantTypes));
+  renderOptions(stipulationTypeNode, Object.values(VerifyIQ.StipulationTypes));
 
   var renderBtn = document.querySelector("#render");
   applicationNode.onkeyup = function(e) {
@@ -215,23 +124,39 @@
     }
   }
 
+  function renderOptions(node, options) {
+    options.forEach((optionValue) => {
+      var option = document.createElement("option");   
+      var text = document.createTextNode(optionValue); 
+
+      option.setAttribute("value", optionValue);
+      option.appendChild(text);
+      node.appendChild(option);
+    })
+  }
+
   function render() {
     var applicationId = applicationNode.value;
-    var selectedApplicantType = applicantTypeNode.options[applicantTypeNode.selectedIndex].text;
-    var selectedStipulationType = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].text;
+    var applicant = applicantTypeNode.options[applicantTypeNode.selectedIndex].text;
+    var stipulation = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].text;
 
     if (applicationId.trim() === '') {
       return;
     }
 
     console.log('Loading application');
-    console.log("applicationId", applicationId)
-    console.log('Applicant type', selectedApplicantType);
-    console.log('Stipulation type', selectedStipulationType);
+    console.log(`applicationId    --- ${applicationId}`)
+    console.log(`Applicant type   --- ${applicant}`);
+    console.log(`Stipulation type --- ${stipulation}`);
 
     root.innerHTML = '';
 
-    viq.renderApplicationId(root, applicationId);
+    viq.renderApplicationId({
+      htmlElement: root, 
+      applicationId,
+      applicant,
+      stipulation 
+    });
   }
 
   renderBtn.addEventListener("click", () => {

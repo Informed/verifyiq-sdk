@@ -1,7 +1,17 @@
-// import { AuthTypes } from './auth-types.enum';
+
+export type renderApplicationIdArgType = { 
+  htmlElement: HTMLElement,
+  applicationId: string,
+  applicant?: string,
+  stipulation?: string
+}
 
 export interface IVerifyIQ {
-  // setAuth(authType: AuthTypes): this;
   enableLogging(isEnabled: boolean): this;
-  renderApplicationId(htmlElement: HTMLElement, applicationId: string): void;
+  renderApplicationId({
+    htmlElement,
+    applicationId,
+    applicant,
+    stipulation
+  }: renderApplicationIdArgType): void;
 }
