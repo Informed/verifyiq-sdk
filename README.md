@@ -62,6 +62,11 @@ viq.renderApplicationId({verifyIQRoot, applicationId, applicant, stipulation});
 
 Accessible as **`VerifyIQ.<Env>`**;
 
+| Env        | Description                                           |
+| ---------- | ----------------------------------------------------- |
+| Staging    | Set the SDK to run in the Staging/Testing environment |
+| Production | Set the SDK to run in the Production environment      |
+
 ### StipulationTypes
 
 Accessible as **`VerifyIQ.StipulationTypes`**;
