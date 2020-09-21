@@ -66,83 +66,23 @@ Accessible as **`VerifyIQ.<Env>`**;
 
 Accessible as **`VerifyIQ.StipulationTypes`**;
 
-| StipulationTypes                        | Description                                                         |
-| --------------------------------------- | --------------------------------------------------------------------|
-| Income                                  | Set the stipulation type to Income                                  |  
-| ContractCancellationOption              | Set the stipulation type to ContractCancellationOption              |          
-| Residence                               | Set the stipulation type to Residence                               |
-| PurchaseOrder                           | Set the stipulation type to PurchaseOrder                           |
-| Identity                                | Set the stipulation type to Identity                                |
-| PaidAccount                             | Set the stipulation type to PaidAccount                             |
-| Insurance                               | Set the stipulation type to Insurance                               |
-| Trade                                   | Set the stipulation type to Trade                                   |
-| Title                                   | Set the stipulation type to Title                                   |
-| MortgageCurrent                         | Set the stipulation type to MortgageCurrent                         | 
-| Registration                            | Set the stipulation type to Registration                            |
-| NonOfficerResolutionRequired            | Set the stipulation type to NonOfficerResolutionRequired            |               
-| VehicleImages                           | Set the stipulation type to VehicleImages                           |
-| BankruptcyDischarged                    | Set the stipulation type to BankruptcyDischarged                    | 
-| CreditApplication                       | Set the stipulation type to CreditApplication                       |
-| NonBureauCredit                         | Set the stipulation type to NonBureauCredit                         |
-| CreditApproval                          | Set the stipulation type to CreditApproval                          |
-| TaxLienSatisfied                        | Set the stipulation type to TaxLienSatisfied                        |
-| CreditScoreDisclosureException          | Set the stipulation type to CreditScoreDisclosureException          |                   
-| ChildSupportPaidAndCurrent              | Set the stipulation type to ChildSupportPaidAndCurrent              |         
-| RetailInstallmentSalesContract          | Set the stipulation type to RetailInstallmentSalesContract          |                 
-| Rent                                    | Set the stipulation type to Rent                                    | 
-| CosignerNotice                          | Set the stipulation type to CosignerNotice                          |
-| ArticlesOfIncorporation                 | Set the stipulation type to ArticlesOfIncorporation                 |    
-| OdometerStatement                       | Set the stipulation type to OdometerStatement                       |
-| ExecutedCrossCollateralDefaultAgreement | Set the stipulation type to ExecutedCrossCollateralDefaultAgreement |                                   
-| ForeignLanguageAcknowledgement          | Set the stipulation type to ForeignLanguageAcknowledgement          |
-| ExecutedGuarantyAgreement               | Set the stipulation type to ExecutedGuarantyAgreement               |
-| BookoutSheet                            | Set the stipulation type to BookoutSheet                            | 
-| AppearanceProtection                    | Set the stipulation type to AppearanceProtection                    | 
-| GapWaiverContract                       | Set the stipulation type to GapWaiverContract                       |
-| BookoutPdf                              | Set the stipulation type to BookoutPdf                              |
-| VehicleServiceContract                  | Set the stipulation type to VehicleServiceContract                  |
-| ContractAddendum                        | Set the stipulation type to ContractAddendum                        | 
-| CreditLifeDisabilityContract            | Set the stipulation type to CreditLifeDisabilityContract            |
-| CpoCertificate                          | Set the stipulation type to CpoCertificate                          |
-| LienPerfection                          | Set the stipulation type to LienPerfection                          |
-| DisclosureForm                          | Set the stipulation type to DisclosureForm                          |
-| PowerOfAttorney                         | Set the stipulation type to PowerOfAttorney                         |
-| DocFeeDisclosureForm                    | Set the stipulation type to DocFeeDisclosureForm                    |
-| LeaseContract                           | Set the stipulation type to LeaseContract                           |
-| EmergencyRoadsideAssist                 | Set the stipulation type to EmergencyRoadsideAssist                 | 
-| PayoffRelease                           | Set the stipulation type to PayoffRelease                           |
-| EmergencyTravelAssist                   | Set the stipulation type to EmergencyTravelAssist                   |
-| AcknowledgementOfRewrittenContract      | Set the stipulation type to AcknowledgementOfRewrittenContract      |
-| Etch                                    | Set the stipulation type to Etch                                    | 
-| OrderForm                               | Set the stipulation type to OrderForm                               |
-| ExcessWearAndTear                       | Set the stipulation type to ExcessWearAndTear                       |
-| SSN                                     | Set the stipulation type to SSN                                     |
-| FaxCoverSheet                           | Set the stipulation type to FaxCoverSheet                           | 
-| Phone                                   | Set the stipulation type to Phone                                   |
-| GapDisclosureAddendum                   | Set the stipulation type to GapDisclosureAddendum                   |
-| AutomaticACHWithdrawal                  | Set the stipulation type to AutomaticACHWithdrawal                  | 
-| HailDamageDocument                      | Set the stipulation type to HailDamageDocument                      |
-| Miscellaneous                           | Set the stipulation type to Miscellaneous                           |
-| Invoice                                 | Set the stipulation type to Invoice                                 |
-| KeyReplacement                          | Set the stipulation type to KeyReplacement                          |
-| ElectronicConsent                       | Set the stipulation type to ElectronicConsent                       |
-| LemonLaw                                | Set the stipulation type to LemonLaw                                |
-| CancellationAgreement                   | Set the stipulation type to CancellationAgreement                   |
-| MailedAaNotice                          | Set the stipulation type to MailedAaNotice                          | 
-| ReportOfSale                            | Set the stipulation type to ReportOfSale                            |
-| MaintenanceWorksheet                    | Set the stipulation type to MaintenanceWorksheet                    |
-| CreditReport                            | Set the stipulation type to CreditReport                            |
-| Ofac                                    | Set the stipulation type to Ofac                                    | 
-| GuaranteeOfTitle                        | Set the stipulation type to GuaranteeOfTitle                        |   
-| PaintlessDentRepair                     | Set the stipulation type to PaintlessDentRepair                     |  
-| AgreementToContact                      | Set the stipulation type to AgreementToContact                      | 
-| TheftProtection                         | Set the stipulation type to TheftProtection                         | 
-| NegativeEquityForm                      | Set the stipulation type to NegativeEquityForm                      |
-| TheftRecoverySystem                     | Set the stipulation type to TheftRecoverySystem                     |
-| TitleApplication                        | Set the stipulation type to TitleApplication                        |
-| TireWheel                               | Set the stipulation type to TireWheel                               | 
-| VerificationOfEmployment                | Set the stipulation type to VerificationOfEmployment                |
-| TotalLossProtectionAssurance            | Set the stipulation type to TotalLossProtectionAssurance            | 
+| StipulationTypes                        | Display Name                                     |
+| --------------------------------------- | -------------------------------------------------|
+| Income                                  | Proof of Income                                  |
+| Residence                               | Proof of Residence                               |
+| Identity                                | Proof of Identity                                |
+| Insurance                               | Proof of Insurance                               |
+| SSN                                     | Proof of SSN                                     |
+| Trade                                   | Proof of Trade                                   |
+| PaidAccount                             | Proof of Paid Account                            |
+| Phone                                   | Proof of Phone                                   |
+| MortgageCurrent                         | Proof of Mortgage                                |
+| BankruptcyDischarged                    | Proof of BK Discharged                           |
+| TaxLienSatisfied                        | Proof of Tax Lien                                |
+| Rent                                    | Proof of Rent                                    |
+| ChildSupportPaidAndCurrent              | Proof of Child Support                           |
+| ArticlesOfIncorporation                 | Proof of Business                                |
+| ExecutedCrossCollateralDefaultAgreement | Proof of Cross Collateral                        |
 
 ### ApplicantTypes
 
