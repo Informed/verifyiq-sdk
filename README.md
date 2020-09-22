@@ -33,10 +33,9 @@ $ yarn add @informed-iq/verify-iq-sdk
 const viq = new VerifyIQ({
   authToken: 'Basic jcA897afas91jajk2…'
   environment: VerifyIQ.Staging,
-  
+
   actionCallbackWebhookUrl: actionNotificationEndpointUrl,
-  collectedDocumentWebhookUrl: collectedDocumentEndpointUrl,
-  
+
   onPass: (actionObject, reason) => {},
   onIncomplete: (actionObject, reason) => {},
   onWaive: (actionObject, reason) => {},
@@ -50,41 +49,54 @@ const viq = new VerifyIQ({
 <div id="verify-iq-root"></div>
 ```
 
-
-**3. Configure SAML Login Method**
-
-```js
-viq.setAuth(VerifyIQ.auth.Popup);
-```
-
 **4. Render VerifyIQ in the given DOM element**
 
 ```js
 const verifyIQRoot = document.querySelector("#verify-iq-root");
-viq.renderApplicationId(verifyIQRoot, applicationId);
+viq.renderApplicationId({verifyIQRoot, applicationId, applicant, stipulation});
 ```
 
-
 ## Constants
-
-### AuthTypes
-
-Accessible as **`VerifyIQ.<Auth-type>`**;
-
-| Auth  | Description                                         |
-| ----- | --------------------------------------------------- |
-| Popup | Set SAML auth to be processable in the Popup window |
-| Tab   | Set SAML auth to be processable in the separate tab |
 
 ### Environment
 
 Accessible as **`VerifyIQ.<Env>`**;
 
-| Env  | Description                                         |
-| ----- | --------------------------------------------------- |
-| Staging | Set the SDK to run in the Staging/Testing environment |
-| Production | Set the SDK to run in the Production environment |
+| Env        | Description                                           |
+| ---------- | ----------------------------------------------------- |
+| Staging    | Set the SDK to run in the Staging/Testing environment |
+| Production | Set the SDK to run in the Production environment      |
 
+### StipulationTypes
+
+Accessible as **`VerifyIQ.StipulationTypes`**;
+
+| StipulationTypes                        | Display Name                                     |
+| --------------------------------------- | -------------------------------------------------|
+| Income                                  | Proof of Income                                  |
+| Residence                               | Proof of Residence                               |
+| Identity                                | Proof of Identity                                |
+| Insurance                               | Proof of Insurance                               |
+| SSN                                     | Proof of SSN                                     |
+| Trade                                   | Proof of Trade                                   |
+| PaidAccount                             | Proof of Paid Account                            |
+| Phone                                   | Proof of Phone                                   |
+| MortgageCurrent                         | Proof of Mortgage                                |
+| BankruptcyDischarged                    | Proof of BK Discharged                           |
+| TaxLienSatisfied                        | Proof of Tax Lien                                |
+| Rent                                    | Proof of Rent                                    |
+| ChildSupportPaidAndCurrent              | Proof of Child Support                           |
+| ArticlesOfIncorporation                 | Proof of Business                                |
+| ExecutedCrossCollateralDefaultAgreement | Proof of Cross Collateral                        |
+
+### ApplicantTypes
+
+Accessible as **`VerifyIQ.ApplicantTypes`**;
+
+| ApplicantTypes   | Description                                |
+| ---------------- | ------------------------------------------ |
+| PrimaryApplicant | Set the applicant type to PrimaryApplicant |
+| CoApplicant      | Set the applicant type to CoApplicant      |
 
 ### EventTypes
 
