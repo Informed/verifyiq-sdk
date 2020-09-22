@@ -1,3 +1,6 @@
+import '@babel/polyfill';
+import 'whatwg-fetch';
+
 import VerifyIQ from './sdk';
 import { AuthTypes } from './types/auth-types.enum';
 import { EventsEnum } from './types/events.enum';

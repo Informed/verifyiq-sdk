@@ -92,7 +92,6 @@
   var root = document.getElementById('root');
 
   var viq = new VerifyIQ({
-    url: "https://986b62d39c6a.ngrok.io",
     authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
     actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
     environment: VerifyIQ.Staging,
@@ -102,7 +101,7 @@
       console.log("Pass", actionObject, reason);
     },
 
-    onDocumentRequestedViaSms: (stipObjects) => {
+    onDocumentRequestedViaSms: function (stipObjects) {
       console.log("onRequestDocumentsViaSms", stipObjects);
     },
 
