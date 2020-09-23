@@ -1,176 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-  <style>
-    html {
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    body {
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-    }
-    input {
-      height: 25px;
-      padding: 5px;
-      border: 0.1px solid black;
-      border-radius: 5px;
-      min-width: 170px;
-    }
-    button, select {
-      background: darkgrey;
-      border: 0.1px solid black;
-      border-radius: 5px;
-      padding: 10px 10px;
-      cursor: pointer;
-      transition: 200ms;
-    }
-    button:hover {
-      background-color: rgb(217, 217, 217);
-    }
-    #root {
-      width: 100vw;
-      height: 100vh;
-      padding-top: 60px;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      min-width: 1405px;
-      min-height: 850px;
-      max-height: 850px;
-    }
-    #buttons {
-      position: absolute;
-      top: 0;
-      margin: 10px 10px 0 50px;
-      display: flex;
-    }
-    #auth-actions {
-      display: none;
-    }
-    .mr-5 {
-      margin-right: 5px;
-    }
-    .full-width {
-      width: 100%;
-    }
-  </style>
-</head>
-<body>
-<div id="buttons">
-  <div id="applicationIdWraper" class="mr-5">
-    <button id="render">View Verifications</button>
-    <input id="applicationId" placeholder="Enter Application ID here..." />
-  </div>
-  <div id="applicantTypeWrapper" class="mr-5">
-    <select id="applicantType" class="full-width"></select>
-  </div>
-  <div id="stipulationTypeWrapper">
-    <select id="stipulationType" class="full-width"></select>
-  </div>
-</div>
-
-<div id="root"></div>
-<script src="../dist/index.js"></script>
-<script>
-  // polyfill for IE11
-  if (!Object.values) {
-    Object.values = function(obj) {
-      return Object.keys(obj).map(function(e) {
-        return obj[e];
-      });
-    };
-  }
-
-  var applicationNode = document.getElementById('applicationId');
-  var applicantTypeNode = document.getElementById('applicantType');
-  var stipulationTypeNode = document.getElementById('stipulationType');
-  var root = document.getElementById('root');
-
-  var viq = new VerifyIQ({
-    authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
-    actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
-    environment: VerifyIQ.Staging,
-
-    onPass: function (actionObject, reason) {
-      /* Stipulation action handler */
-      console.log("Pass", actionObject, reason);
-    },
-
-    onDocumentRequestedViaSms: function (stipObjects) {
-      console.log("onRequestDocumentsViaSms", stipObjects);
-    },
-
-    onIncomplete: function (actionObject, reason) {
-      /* Stipulation action handler */
-      console.log("Incomplete", actionObject, reason);
-    },
-
-    onWaive: function (actionObject, reason) {
-      /* Stipulation action handler */
-      console.log("Waive", actionObject, reason);
-    },
-
-    onLoad: function (payload) {
-      /* Iframe onLoad event handler */
-      console.log("Frame is loaded", payload);
-    },
-  });
-
-  viq.enableLogging(true);
-
-  renderOptions(applicantTypeNode, Object.values(VerifyIQ.ApplicantTypes));
-  renderOptions(stipulationTypeNode, Object.values(VerifyIQ.StipulationTypes));
-
-  var renderBtn = document.querySelector("#render");
-  applicationNode.onkeyup = function(e) {
-    if (e.which === 13) {
-      render();
-    }
-  }
-
-  renderBtn.addEventListener("click", () => {
-    render();
-  });
-
-  function renderOptions(node, options) {
-    options.forEach((optionValue) => {
-      var option = document.createElement("option");   
-      var text = document.createTextNode(optionValue); 
-
-      option.setAttribute("value", optionValue);
-      option.appendChild(text);
-      node.appendChild(option);
-    })
-  }
-
-  function render() {
-    var applicationId = applicationNode.value;
-    var applicant = applicantTypeNode.options[applicantTypeNode.selectedIndex].text;
-    var stipulation = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].text;
-
-    if (applicationId.trim() === '') {
-      return;
-    }
-
-    console.log('Loading application');
-    console.log(`applicationId    --- ${applicationId}`)
-    console.log(`Applicant type   --- ${applicant}`);
-    console.log(`Stipulation type --- ${stipulation}`);
-
-    root.innerHTML = '';
-
-    viq.renderApplicationId({
-      htmlElement: root, 
-      applicationId,
-      applicant,
-      stipulation 
-    });
-  }
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="buttons">
+      <div id="applicationIdWraper" class="mr-5">
+        <button id="render">View Verifications</button>
+        <input id="applicationId" placeholder="Enter Application ID here..." />
+      </div>
+      <div id="applicantTypeWrapper" class="mr-5">
+        <select id="applicantType" class="full-width"></select>
+      </div>
+      <div id="stipulationTypeWrapper">
+        <select id="stipulationType" class="full-width"></select>
+      </div>
+    </div>
+    <div class="mdModal" id="modal">
+      <div id="closeModal">
+        <a href="#" id="close"></a>
+      </div>
+      <div id="root"></div>
+    </div>
+    <div class="mdOverlay"></div>
+    <script src="../dist/index.js"></script>
+    <script src="./index.js"></script>
+  </body>
 </html>
