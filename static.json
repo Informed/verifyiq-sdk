@@ -1,6 +1,8 @@
 {
   "root": ".",
   "routes": {
+    "/index.js": "./examples/index.js",
+    "/style.css": "./examples/style.css",
     "/*": "./examples/index.html"
   }
 }
