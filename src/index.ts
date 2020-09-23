@@ -1,4 +1,5 @@
 import '@babel/polyfill';
+import 'url-search-params-polyfill';
 import 'whatwg-fetch';
 
 import VerifyIQ from './sdk';

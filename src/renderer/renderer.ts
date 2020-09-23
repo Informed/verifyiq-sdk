@@ -147,6 +147,8 @@ class Renderer implements IRenderer {
     const frame = document.createElement('iframe');
     frame.style.width = '100%';
     frame.style.height = '100%';
+    frame.style.border = '1px solid #ccc';
+    frame.style.backgroundColor = '#fff';
     frame.id = INJECTED_UI_ID;
     const queryParams = new URLSearchParams();
     queryParams.append('sdk', 'true');
