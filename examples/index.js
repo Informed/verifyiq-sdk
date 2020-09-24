@@ -100,8 +100,8 @@ function init() {
 
   function render() {
     var applicationId = applicationNode.value;
-    var applicant = applicantTypeNode.options[applicantTypeNode.selectedIndex].text;
-    var stipulation = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].text;
+    var applicant = applicantTypeNode.options[applicantTypeNode.selectedIndex].value;
+    var stipulation = stipulationTypeNode.options[stipulationTypeNode.selectedIndex].value;
 
     if (applicationId.trim() === '') {
       return;
