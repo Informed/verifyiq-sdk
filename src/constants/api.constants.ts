@@ -3,26 +3,25 @@ export enum ApiEnvironment {
   Production = 'prod',
 }
 
-
 export enum ApplicantTypes {
-  PrimaryApplicant = 'PrimaryApplicant',
-  CoApplicant = 'CoApplicant'
+  PrimaryApplicant = 'primaryApplicant',
+  CoApplicant = 'coApplicant'
 }
 
 export enum StipulationTypes {
-  Income = 'Income',
-  Residence = 'Residence',
-  Identity = 'Identity',
-  Insurance = 'Insurance',
-  SSN = 'SSN',
-  Trade = 'Trade',
-  PaidAccount = 'PaidAccount',
-  Phone = 'Phone',
-  MortgageCurrent = 'MortgageCurrent',
-  BankruptcyDischarged = 'BankruptcyDischarged',
-  TaxLienSatisfied = 'TaxLienSatisfied',
-  Rent = 'Rent',
-  ChildSupportPaidAndCurrent = 'ChildSupportPaidAndCurrent',
-  ArticlesOfIncorporation = 'ArticlesOfIncorporation',
-  ExecutedCrossCollateralDefaultAgreement = 'ExecutedCrossCollateralDefaultAgreement'
-} 
+  Income = 'income',
+  Residence = 'residence',
+  Identity = 'identity',
+  Insurance = 'insurance',
+  SSN = 'ssn',
+  Trade = 'trade',
+  PaidAccount = 'paid account',
+  Phone = 'phone',
+  MortgageCurrent = 'mortgage',
+  BankruptcyDischarged = 'bk discharged',
+  TaxLienSatisfied = 'tax lien satisfied',
+  Rent = 'rent',
+  ChildSupportPaidAndCurrent = 'child support paid',
+  ArticlesOfIncorporation = 'articles of incorporation',
+  ExecutedCrossCollateralDefaultAgreement = 'cross collateral'
+}
