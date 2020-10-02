@@ -49,7 +49,6 @@ function init() {
   var closeBtnNode = document.getElementById('close');
 
   var viq = new VerifyIQ({
-    url: 'https://4504cf01fe94.ngrok.io',
     authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
     actionCallbackWebhookUrl: 'https://39d3129fa6a9.ngrok.io/webhook',
     environment: VerifyIQ.Staging,
