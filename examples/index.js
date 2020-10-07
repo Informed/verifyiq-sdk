@@ -20,12 +20,12 @@ function removeClass(element, className) {
   element.className = element.className.replace(className, '');
 }
 
-function renderOptions(node, options) {
+function renderOptions({ node, options, values }) {
   for (let i = 0; i < options.length; ++i) {
-    const optionValue = options[i];
+    var optionKey = options[i];
+    var optionValue = values[optionKey];
     var option = document.createElement('option');
-    var text = document.createTextNode(optionValue);
-
+    var text = document.createTextNode(optionKey);
     option.setAttribute('value', optionValue);
     option.appendChild(text);
     node.appendChild(option);
@@ -80,8 +80,16 @@ function init() {
 
   viq.enableLogging(true);
 
-  renderOptions(applicantTypeNode, Object.values(VerifyIQ.ApplicantTypes));
-  renderOptions(stipulationTypeNode, Object.values(VerifyIQ.StipulationTypes));
+  renderOptions({ 
+    node: applicantTypeNode,
+    options: Object.keys(VerifyIQ.ApplicantTypes),
+    values: VerifyIQ.ApplicantTypes
+  });
+  renderOptions({ 
+    node: stipulationTypeNode,
+    options: Object.keys(VerifyIQ.StipulationTypes),
+    values: VerifyIQ.StipulationTypes
+  });
 
   var renderBtn = document.getElementById('render');
   applicationNode.onkeyup = function (e) {
