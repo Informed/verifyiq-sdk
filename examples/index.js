@@ -49,9 +49,9 @@ function init() {
   var closeBtnNode = document.getElementById('close');
 
   var viq = new VerifyIQ({
-    authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
-    actionCallbackWebhookUrl: 'https://39d3129fa6a9.ngrok.io/webhook',
-    environment: VerifyIQ.Staging,
+    authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
+    actionCallbackWebhookUrl: 'https://demo.informed.iq/suhdn1su',
+    environment: VerifyIQ.Production,
 
     onPass: function (actionObject, reason) {
       /* Stipulation action handler */
