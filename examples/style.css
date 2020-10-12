@@ -70,11 +70,16 @@ select {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  width: 100%;
   margin: auto;
   position: fixed;
-  left: 0;
-  right: 0;
+  left: 50%;
+  top: 50%;
   z-index: 20;
+  transform: translate(-50%,-50%) scale(.25);
+  transition:all ease .25s;
+  opacity:0;
+  visibility:hidden;
   visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
@@ -103,6 +108,9 @@ select {
 
 .md-show {
   visibility: visible;
+  transform:translate(-50%,-50%);
+  transition:all ease .25s;
+  opacity:1;
 }
 
 .md-show~.md-overlay {
