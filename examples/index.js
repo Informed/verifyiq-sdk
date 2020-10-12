@@ -67,7 +67,6 @@ function init() {
   var materialSpinnerNode = document.getElementById('materialSpinner');
 
   var viq = new VerifyIQ({
-    url: 'https://ce9d5530a392.ngrok.io',
     authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
     actionCallbackWebhookUrl: 'https://demo.informed.iq/suhdn1su',
     environment: VerifyIQ.Production,

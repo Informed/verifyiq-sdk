@@ -79,6 +79,7 @@ select {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
+  background-color: #9e9e9ec4;
 }
 
 .md-overlay {
@@ -116,12 +117,15 @@ select {
 
 #close {
   position: absolute;
-  right: 15px;
-  margin-top: 50px;
-  width: 33px;
-  height: 33px;
+  right: 53px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background-color: rgba(158, 158, 158);
   background-color: rgba(158, 158, 158, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #close:hover {
@@ -131,7 +135,6 @@ select {
 #close:before,
 #close:after {
   position: absolute;
-  left: 15px;
   content: ' ';
   height: 33px;
   width: 2px;
