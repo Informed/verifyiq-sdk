@@ -84,7 +84,6 @@ function init() {
     onLoad: function (payload) {
       /* Iframe onLoad event handler */
       console.log('Frame is loaded', payload);
-      hideSpinner(materialSpinnerNode);
     }
   });
 

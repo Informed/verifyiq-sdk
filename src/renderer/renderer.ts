@@ -145,7 +145,7 @@ class Renderer implements IRenderer {
    */
   protected _inflateUI(): HTMLElement {
     const frame = document.createElement('iframe');
-    frame.style.width = '90%';
+    frame.style.width = '95%';
     frame.style.height = '100%';
     frame.style.border = 'none';
     frame.style.boxShadow = '0px 3px 15px 2px rgba(0, 0, 0, 0.27)';
