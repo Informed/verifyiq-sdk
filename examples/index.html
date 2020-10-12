@@ -7,27 +7,40 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="buttons">
-      <div id="applicationIdWraper" class="mr-5">
-        <button id="render">View Verifications</button>
-        <input id="applicationId" placeholder="Enter Application ID here..." />
-      </div>
-      <div id="applicantTypeWrapper" class="mr-5">
-        <select id="applicantType" class="full-width">
-          <option value="" selected disabled hidden>Choose Applicant...</option>
-        </select>
-      </div>
-      <div id="stipulationTypeWrapper">
-        <select id="stipulationType" class="full-width">
-          <option value="" selected disabled hidden>Choose Stipulation...</option>
-        </select>
+    <div id="form">
+      <div id="buttons">
+        <h3 class="heading">View specific application by selecting options below</h3>
+        <div class="group mb-30">      
+          <input type="text" id="applicationId" class="select-text" required/>
+          <span class="select-highlight"></span>
+					<span class="select-bar"></span>
+					<label class="select-label">Enter Application ID here...</label>
+        </div>
+        <div class="select group mb-30">
+					<select id="applicantType" class="select-text" required>
+						<option value="" disabled selected></option>
+					</select>
+					<span class="select-highlight"></span>
+					<span class="select-bar"></span>
+					<label class="select-label">Choose Applicant...</label>
+				</div>
+        <div class="select group mb-30">
+					<select id="stipulationType" class="select-text" required>
+						<option value="" disabled selected></option>
+					</select>
+					<span class="select-highlight"></span>
+					<span class="select-bar"></span>
+					<label class="select-label">Choose Stipulation...</label>
+				</div>
+        <button id="render" class="pure-material-button-contained" >View Verifications</button>
       </div>
     </div>
-    <div class="mdModal" id="modal">
-        <a href="#" id="close"></a>
+    <div class="md-modal" id="modal">
+      <div id="materialSpinner" class="hide"></div>
+      <a href="#" id="close"></a>
       <div id="root"></div>
     </div>
-    <div class="mdOverlay"></div>
+    <div class="md-overlay"></div>
     <script src="../dist/index.js"></script>
     <script src="./index.js"></script>
   </body>

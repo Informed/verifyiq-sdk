@@ -36,8 +36,24 @@ function openModal(modalNode) {
   addClass(modalNode, 'md-show');
 }
 
-function mdModal(modalNode) {
+function closeModal(modalNode) {
   removeClass(modalNode, 'md-show');
+}
+
+function openForm(formNode) {
+  removeClass(formNode, 'hide');
+}
+
+function closeForm(formNode) {
+  addClass(formNode, 'hide');
+}
+
+function showSpinner(materialSpinnerNode) {
+  removeClass(materialSpinnerNode, 'hide');
+}
+
+function hideSpinner(materialSpinnerNode) {
+  addClass(materialSpinnerNode, 'hide');
 }
 
 function init() {
@@ -47,8 +63,11 @@ function init() {
   var stipulationTypeNode = document.getElementById('stipulationType');
   var modalNode = document.getElementById('modal');
   var closeBtnNode = document.getElementById('close');
+  var formNode = document.getElementById('form');
+  var materialSpinnerNode = document.getElementById('materialSpinner');
 
   var viq = new VerifyIQ({
+    url: 'https://ce9d5530a392.ngrok.io',
     authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
     actionCallbackWebhookUrl: 'https://demo.informed.iq/suhdn1su',
     environment: VerifyIQ.Production,
@@ -75,6 +94,7 @@ function init() {
     onLoad: function (payload) {
       /* Iframe onLoad event handler */
       console.log('Frame is loaded', payload);
+      hideSpinner(materialSpinnerNode);
     }
   });
 
@@ -103,7 +123,9 @@ function init() {
   });
 
   closeBtnNode.addEventListener('click', function () {
-    mdModal(modalNode);
+    closeModal(modalNode);
+    hideSpinner(materialSpinnerNode);
+    openForm(formNode);
   });
 
   function render() {
@@ -121,7 +143,9 @@ function init() {
     console.log('Stipulation type ---', stipulation);
 
     root.innerHTML = '';
+    closeForm(formNode);
     openModal(modalNode);
+    showSpinner(materialSpinnerNode);
     viq.renderApplicationId({
       htmlElement: root,
       applicationId: applicationId,
