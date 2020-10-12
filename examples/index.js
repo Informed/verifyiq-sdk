@@ -36,8 +36,16 @@ function openModal(modalNode) {
   addClass(modalNode, 'md-show');
 }
 
-function mdModal(modalNode) {
+function closeModal(modalNode) {
   removeClass(modalNode, 'md-show');
+}
+
+function openForm(formNode) {
+  removeClass(formNode, 'hide');
+}
+
+function closeForm(formNode) {
+  addClass(formNode, 'hide');
 }
 
 function init() {
@@ -47,6 +55,7 @@ function init() {
   var stipulationTypeNode = document.getElementById('stipulationType');
   var modalNode = document.getElementById('modal');
   var closeBtnNode = document.getElementById('close');
+  var formNode = document.getElementById('form');
 
   var viq = new VerifyIQ({
     authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
@@ -103,7 +112,8 @@ function init() {
   });
 
   closeBtnNode.addEventListener('click', function () {
-    mdModal(modalNode);
+    closeModal(modalNode);
+    openForm(formNode);
   });
 
   function render() {
@@ -121,6 +131,7 @@ function init() {
     console.log('Stipulation type ---', stipulation);
 
     root.innerHTML = '';
+    closeForm(formNode);
     openModal(modalNode);
     viq.renderApplicationId({
       htmlElement: root,
