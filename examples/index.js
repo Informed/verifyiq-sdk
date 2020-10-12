@@ -48,14 +48,6 @@ function closeForm(formNode) {
   addClass(formNode, 'hide');
 }
 
-function showSpinner(materialSpinnerNode) {
-  removeClass(materialSpinnerNode, 'hide');
-}
-
-function hideSpinner(materialSpinnerNode) {
-  addClass(materialSpinnerNode, 'hide');
-}
-
 function init() {
   var root = document.getElementById('root');
   var applicationNode = document.getElementById('applicationId');
@@ -64,7 +56,6 @@ function init() {
   var modalNode = document.getElementById('modal');
   var closeBtnNode = document.getElementById('close');
   var formNode = document.getElementById('form');
-  var materialSpinnerNode = document.getElementById('materialSpinner');
 
   var viq = new VerifyIQ({
     authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
@@ -123,7 +114,6 @@ function init() {
 
   closeBtnNode.addEventListener('click', function () {
     closeModal(modalNode);
-    hideSpinner(materialSpinnerNode);
     openForm(formNode);
   });
 
@@ -144,7 +134,6 @@ function init() {
     root.innerHTML = '';
     closeForm(formNode);
     openModal(modalNode);
-    showSpinner(materialSpinnerNode);
     viq.renderApplicationId({
       htmlElement: root,
       applicationId: applicationId,

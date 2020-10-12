@@ -117,19 +117,14 @@ select {
 
 #close {
   position: absolute;
-  right: 53px;
+  right: 68px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(158, 158, 158);
-  background-color: rgba(158, 158, 158, 0.7);
+  background-color: rgb(75, 75, 75);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-#close:hover {
-  background-color: rgba(158, 158, 158, 1);
 }
 
 #close:before,
@@ -387,38 +382,4 @@ label 				 {
 
 .pure-material-button-contained:disabled::after {
   opacity: 0;
-}
-
-#materialSpinner {
-  height: 50px;
-  min-height: 50px;
-  width: 50px;
-  border-radius: 100px;
-  border: 5px transparent solid;
-  border-top: 5px #3F51B5 solid;
-  animation: material-spinner 4s infinite;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-@keyframes material-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(360deg);
-  }
-  50% {
-    transform: rotate(720deg);
-  }
-  75% {
-    transform: rotate(1080deg);
-  }
-  100% {
-    transform: rotate(1440deg);
-  }
 }
