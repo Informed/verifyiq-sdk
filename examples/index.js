@@ -49,7 +49,7 @@ function closeForm(formNode) {
 }
 
 function init() {
-  var root = document.getElementById('root');
+  var root = document.getElementById('iframeWrapper');
   var applicationNode = document.getElementById('applicationId');
   var applicantTypeNode = document.getElementById('applicantType');
   var stipulationTypeNode = document.getElementById('stipulationType');
