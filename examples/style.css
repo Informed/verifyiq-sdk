@@ -23,8 +23,17 @@ select {
 #root {
   height: 100%;
   min-width: 1405px;
-  padding: 15px 0;
+  padding: 25px 0 15px 0;
   text-align: center;
+}
+
+#iframeWrapper {
+  height: 98%;
+  width: 95%;
+  margin: 0 auto;
+  padding-top: 15px;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.27) 0px 3px 15px 2px;
 }
 
 #form {
@@ -43,10 +52,6 @@ select {
   flex-direction: column;
   padding: 10px 15px 15px 15px;
   box-shadow: 0px 3px 15px 2px rgba(0, 0, 0, 0.27);
-}
-
-#auth-actions {
-  display: none;
 }
 
 .input {
@@ -84,7 +89,6 @@ select {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
-  background-color: #9e9e9ec4;
 }
 
 .md-overlay {
@@ -96,10 +100,10 @@ select {
   visibility: hidden;
   z-index: 10;
   opacity: 0;
-  background: #fff;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  background-color: #9e9e9ec4;
+  -webkit-transition: 0.3s ease-in;
+  -moz-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 .hide {
@@ -109,7 +113,7 @@ select {
 .md-show {
   visibility: visible;
   transform:translate(-50%,-50%);
-  transition:all ease .25s;
+  transition: all ease .25s;
   opacity:1;
 }
 
@@ -133,7 +137,7 @@ select {
 #close {
   position: relative;
   left: 20px;
-  top: 35px;
+  top: 40px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
