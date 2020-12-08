@@ -60,7 +60,7 @@ function init() {
   var viq = new VerifyIQ({
     authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpSSFVJbFJBR0lMVFIzTFd0VnViQUxRPT0=',
     actionCallbackWebhookUrl: 'https://demo.informed.iq/suhdn1su',
-    environment: VerifyIQ.Production,
+    environment: VerifyIQ.Staging,
 
     onPass: function (actionObject, reason) {
       /* Stipulation action handler */
