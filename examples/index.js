@@ -58,7 +58,7 @@ function init() {
   var formNode = document.getElementById('form');
 
   var viq = new VerifyIQ({
-    authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
+    authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpSSFVJbFJBR0lMVFIzTFd0VnViQUxRPT0=',
     actionCallbackWebhookUrl: 'https://demo.informed.iq/suhdn1su',
     environment: VerifyIQ.Production,
 
