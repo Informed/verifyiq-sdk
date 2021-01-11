@@ -44,6 +44,14 @@ class Renderer implements IRenderer {
    */
   private _applicationId!: string;
   /**
+   * StipulationType of the application, that need to be loaded
+   */
+  private _stipulation!: string;
+  /**
+   * ApplicantType of the application, that needs to be loaded
+   */
+  private _applicant!: string;
+  /**
    * Frame DOM element
    */
   private _frame: Nullable<Window>;
@@ -73,6 +81,22 @@ class Renderer implements IRenderer {
    */
   set applicationId(applicationId: string) {
     this._applicationId = applicationId;
+  }
+
+   /**
+   * Initializes @property _applicant property
+   * @param applicant {String}
+   */
+  set applicant(applicant: string) {
+    this._applicant = applicant;
+  }
+
+   /**
+   * Initializes @property _stipulation property
+   * @param _stipulation {String}
+   */
+  set stipulation(stipulation: string) {
+    this._stipulation = stipulation;
   }
 
   /**
@@ -123,8 +147,15 @@ class Renderer implements IRenderer {
     const frame = document.createElement('iframe');
     frame.style.width = '100%';
     frame.style.height = '100%';
+    frame.style.border = 'none';
+    frame.style.boxShadow = '0px 15px 15px 2px rgba(0, 0, 0, 0.27)';
+    frame.style.backgroundColor = '#fff';
     frame.id = INJECTED_UI_ID;
-    frame.src = `${this._url}/applications/${this._applicationId}?sdk=true`;
+    const queryParams = new URLSearchParams();
+    queryParams.append('sdk', 'true');
+    queryParams.append('applicant', this._applicant);
+    queryParams.append('stipulation', this._stipulation);
+    frame.src = `${this._url}/applications/${this._applicationId}?${queryParams.toString()}`;
     frame.onload = () => {
       this._frame = frame.contentWindow!;
       this._queue.forEach((message) => this.exec(message));

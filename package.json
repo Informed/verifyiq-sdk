@@ -1,6 +1,6 @@
 {
   "name": "@informed-iq/verify-iq-sdk",
-  "version": "1.6.3",
+  "version": "1.10.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -40,5 +40,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Informed/verifyiq-sdk.git"
+  },
+  "dependencies": {
+    "@babel/polyfill": "7.10.4",
+    "url-search-params-polyfill": "^8.1.0",
+    "whatwg-fetch": "3.2.0"
   }
 }

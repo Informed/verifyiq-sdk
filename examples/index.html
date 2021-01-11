@@ -3,139 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
-    <style>
-      body {
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
-      }
-      input {
-        height: 25px;
-        padding: 5px;
-        border: 0.1px solid black;
-        border-radius: 5px;
-        min-width: 170px;
-      }
-      button {
-        background: darkgrey;
-        border: 0.1px solid black;
-        border-radius: 5px;
-        padding: 10px 10px;
-        cursor: pointer;
-        transition: 200ms;
-      }
-
-      button:hover {
-        background-color: rgb(217, 217, 217);
-      }
-      #root {
-        width: 90%;
-        height: 80%;
-        margin-top: 50px;
-        margin-left: 5px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-      }
-      #buttons {
-        position: absolute;
-        top: 0;
-        margin: 5px 0 0 5px;
-      }
-      #auth-actions {
-        display: none;
-      }
-    </style>
   </head>
   <body>
-    <div id="buttons">
-      <button id="render">View Verifications</button>
-      <div id="auth-actions">
-        <button id="auth-popup">SAML in Popup</button>
-        <button id="auth-window">SAML in Separate Tab</button>
+    <div id="form">
+      <div id="buttons">
+        <h3 class="heading">View your verifications by selecting the options below</h3>
+        <div class="group mb-30">      
+          <input type="text" id="applicationId" class="select-text" required/>
+          <span class="select-highlight"></span>
+					<span class="select-bar"></span>
+					<label class="select-label">Enter Application ID here...</label>
+        </div>
+        <div class="select group mb-30">
+					<select id="applicantType" class="select-text" required>
+						<option value="" disabled selected></option>
+					</select>
+					<span class="select-highlight"></span>
+					<span class="select-bar"></span>
+					<label class="select-label">Choose Applicant...</label>
+				</div>
+        <div class="select group mb-30">
+					<select id="stipulationType" class="select-text" required>
+						<option value="" disabled selected></option>
+					</select>
+					<span class="select-highlight"></span>
+					<span class="select-bar"></span>
+					<label class="select-label">Choose Stipulation...</label>
+				</div>
+        <button id="render" class="pure-material-button-contained" >View Verifications</button>
       </div>
-      <input id="applicationId" placeholder="Enter Application ID here..." />
     </div>
-
-    <div id="root"></div>
+    <div class="md-modal" id="modal">
+      <div class="close-btn-wrapper">
+        <a href="#" id="close"></a>
+      </div>
+      <div id="root">
+        <div id="iframeWrapper"></div>
+      </div>
+    </div>
+    <div class="md-overlay"></div>
     <script src="../dist/index.js"></script>
-    <script>
-      var applicationNode = document.getElementById('applicationId');
-      var authActionsContainer = document.getElementById('auth-actions');
-      var root = document.getElementById('root');
-
-      authActionsContainer.style.display = 'none';
-
-      var viq = new VerifyIQ({
-        authToken: 'Basic YWxseUBkcml2ZWluZm9ybWVkLmNvbTpOdkFiUmltWGlyOWdIMU5NVmVNZnVBPT0=',
-        actionCallbackWebhookUrl: "https://39d3129fa6a9.ngrok.io/webhook",
-
-        environment: VerifyIQ.Staging,
-        authType: VerifyIQ.auth.Popup,
-
-        onPass: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Pass", actionObject, reason);
-        },
-
-        onDocumentRequestedViaSms: (stipObjects) => {
-          console.log("onRequestDocumentsViaSms", stipObjects);
-        },
-
-        onIncomplete: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Incomplete", actionObject, reason);
-        },
-
-        onWaive: function (actionObject, reason) {
-          /* Stipulation action handler */
-          console.log("Waive", actionObject, reason);
-        },
-
-        onLoad: function (payload) {
-          /* Iframe onLoad event handler */
-          console.log("Frame is loaded", payload);
-        },
-      });
-
-      viq.enableLogging(true);
-
-      var renderBtn = document.querySelector("#render");
-      var samlPopupBtn = document.querySelector("#auth-popup");
-      var samlWindowBtn = document.querySelector("#auth-window");
-
-      applicationNode.onkeyup = function(e) {
-        if (e.which === 13) {
-          render();
-        }
-      }
-      samlPopupBtn.addEventListener("click", () => {
-        viq.setAuth(VerifyIQ.auth.Popup);
-      });
-
-      samlWindowBtn.addEventListener("click", () => {
-        viq.setAuth(VerifyIQ.auth.Tab);
-      });
-
-      function render() {
-        var applicationId = applicationNode.value;
-
-        if (applicationId.trim() === '') {
-          return;
-        }
-
-        console.log('Loading application', applicationId);
-
-        root.innerHTML = '';
-
-        viq.renderApplicationId(root, applicationId);
-      }
-
-      renderBtn.addEventListener("click", () => {
-        render();
-      });
-    </script>
+    <script src="./index.js"></script>
   </body>
 </html>
