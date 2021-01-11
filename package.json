@@ -21,7 +21,7 @@
   "author": "Shahen Hovhannisyan <shahen@simplytechnologies.net>",
   "license": "SEE LICENSE IN MASTER SERVICE AGREEMENT WITH INFORMED, INC.",
   "engines": {
-    "node": "13.x"
+    "node": "14.x"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "8.0.1",
