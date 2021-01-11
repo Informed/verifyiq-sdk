@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v1.4.2
         with:
           always-auth: true
-          node-version: 13.x
+          node-version: 14.x
           scope: "@informed-iq"
       - name: Install dependencies
         run: yarn --frozen-lockfile
