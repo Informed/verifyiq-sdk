@@ -11,6 +11,7 @@ import Renderer from './renderer/renderer';
 import Api from './api/api';
 import { ApiEnvironment, ApplicantTypes, StipulationTypes } from './constants/api.constants';
 import invariant from './utils/invariant';
+import { checkIsValidUrl } from './utils/checkIsValidUrl';
 
 interface SDKOptions {
   url: string;
@@ -188,11 +189,13 @@ class VerifyIQ implements IVerifyIQ {
     htmlElement,
     applicationId,
     applicant = VerifyIQ.ApplicantTypes.PrimaryApplicant,
-    stipulation = ''
+    stipulation = '',
+    collectedDocumentWebhookUrl,
   }: RenderByApplicationIdParams) {
     this.renderer.applicationId = applicationId;
     this.renderer.applicant = applicant;
     this.renderer.stipulation = stipulation;
+    this.renderer.collectedDocumentWebhookUrl = collectedDocumentWebhookUrl;
 
     this.render(htmlElement);
   }

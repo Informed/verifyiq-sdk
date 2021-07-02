@@ -8,6 +8,8 @@ import { AuthTypes } from '../types/auth-types.enum';
 import { IPCSerializable } from '../types/ipc.interface';
 import { IpcMessage } from '../types/ipc.interface';
 import { isObject } from '../utils/isObject';
+import invariant from '../utils/invariant';
+import { checkIsValidUrl } from '../utils/checkIsValidUrl';
 
 export interface RendererOptions {
   element?: HTMLElement;
@@ -60,6 +62,11 @@ class Renderer implements IRenderer {
    */
   private _logger: Logger;
 
+   /**
+   * Collected Document Webhook Url
+   */
+    private _collectedDocumentWebhookUrl?: string;
+
   /**
    * Unexecuted commands
    */
@@ -73,6 +80,12 @@ class Renderer implements IRenderer {
 
     this.onEventReceived = this.onEventReceived.bind(this);
     window.addEventListener('message', this.onEventReceived);
+  }
+
+  set collectedDocumentWebhookUrl(webhookUrl: string | undefined) {
+    const isValidURL = webhookUrl ? checkIsValidUrl(webhookUrl) : true;
+    invariant(isValidURL, 'collectedDocumentWebhookUrl is not a valid URL');
+    this._collectedDocumentWebhookUrl = webhookUrl;
   }
 
   /**
@@ -155,7 +168,14 @@ class Renderer implements IRenderer {
     queryParams.append('sdk', 'true');
     queryParams.append('applicant', this._applicant);
     queryParams.append('stipulation', this._stipulation);
+    const collectedDocumentWebhookUrl = this._collectedDocumentWebhookUrl;
+    
+    if (collectedDocumentWebhookUrl) {
+      queryParams.append('collectedDocumentWebhookUrl', collectedDocumentWebhookUrl);
+    }
+
     frame.src = `${this._url}/applications/${this._applicationId}?${queryParams.toString()}`;
+    
     frame.onload = () => {
       this._frame = frame.contentWindow!;
       this._queue.forEach((message) => this.exec(message));

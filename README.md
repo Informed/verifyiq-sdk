@@ -53,9 +53,9 @@ const viq = new VerifyIQ({
 
 ```js
 const verifyIQRoot = document.querySelector("#verify-iq-root");
-viq.renderApplicationId({verifyIQRoot, applicationId, applicant, stipulation});
+viq.renderApplicationId({verifyIQRoot, applicationId, applicant, stipulation,  collectedDocumentWebhookUrl});
 ```
-
+collectedDocumentWebhookUrl - optional string parameter, if exists must be a valid URL 
 ## Constants
 
 ### Environment
