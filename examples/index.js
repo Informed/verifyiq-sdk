@@ -61,7 +61,6 @@ function init() {
     authToken: 'Basic YWNtZWZpbmFuY2lhbEBkcml2ZWluZm9ybWVkLmNvbTpDcE9iT1FaWkpPVjJMc3VSK2FTVlBBPT0',
     actionCallbackWebhookUrl: 'https://demo.informed.iq/suhdn1su',
     environment: VerifyIQ.Production,
-
     onPass: function (actionObject, reason) {
       /* Stipulation action handler */
       console.log('Pass', actionObject, reason);
@@ -125,10 +124,14 @@ function init() {
       return;
     }
 
+    var collectedDocumentWebhookUrl = 'https://acceptance.driveinformed.com';
+
     console.log('Loading application');
     console.log('applicationId    ---', applicationId);
     console.log('Applicant type   ---', applicant);
     console.log('Stipulation type ---', stipulation);
+    console.log('collectedDocumentWebhookUrl ---', collectedDocumentWebhookUrl);
+
 
     root.innerHTML = '';
     closeForm(formNode);
@@ -137,7 +140,8 @@ function init() {
       htmlElement: root,
       applicationId: applicationId,
       applicant: applicant,
-      stipulation: stipulation
+      stipulation: stipulation,
+      collectedDocumentWebhookUrl: collectedDocumentWebhookUrl,
     });
   }
 }

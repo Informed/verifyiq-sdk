@@ -3,7 +3,8 @@ export type RenderByApplicationIdParams = {
   htmlElement: HTMLElement,
   applicationId: string,
   applicant?: string,
-  stipulation?: string
+  stipulation?: string,
+  collectedDocumentWebhookUrl?: string,
 }
 
 export interface IVerifyIQ {
@@ -12,6 +13,8 @@ export interface IVerifyIQ {
     htmlElement,
     applicationId,
     applicant,
-    stipulation
+    stipulation,
+    collectedDocumentWebhookUrl,
   }: RenderByApplicationIdParams): void;
+  collectedDocumentWebhookUrl?: string;
 }
