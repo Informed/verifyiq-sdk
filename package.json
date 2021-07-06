@@ -42,7 +42,7 @@
     "url": "https://github.com/Informed/verifyiq-sdk.git"
   },
   "dependencies": {
-    "@babel/polyfill": "7.10.4",
+    "@babel/polyfill": "7.11.5",
     "url-search-params-polyfill": "^8.1.0",
     "whatwg-fetch": "3.2.0"
   }
